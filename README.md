@@ -35,6 +35,35 @@
 
 ---
 
+## 新电脑从零环境准备（必看）
+
+下面是一台**什么都没装**的电脑把项目跑起来所需的全部环境。**日常开发（H5 预览 / 构建）只需第 1 项**；只有要出 Android 安装包才需要第 2 项（HBuilderX）。
+
+### 1. 必装：日常开发
+| 环境 | 版本要求 | 安装 / 说明 |
+|------|----------|-------------|
+| **Git** | 任意新版（≥ 2.40） | 用于 clone 仓库。Windows：`winget install Git.Git` 或 git-scm.com |
+| **Node.js** | **≥ 18，推荐 20 LTS 或 22** | Vite 5 + 当前 `@dcloudio` 依赖要求。装 LTS 版；仓库根附 `.nvmrc`（写 `20`），用 nvm 可 `nvm use` 自动对齐。安装时务必勾选「Add to PATH」 |
+| **npm** | 随 Node 自带 | 无需单独装 |
+
+> 仅用 Node + npm 即可完成 `npm install` 与 `npm run dev:h5`（浏览器预览）/ `npm run build:h5`。**不需要 HBuilderX 也能做日常开发与 H5 构建。**
+
+### 2. 仅出 Android 包时需要
+| 环境 | 版本要求 | 说明 |
+|------|----------|------|
+| **HBuilderX** | **必须 v5.24**（与 `package.json` 的 `@dcloudio 3.0.0-50204…` 对齐） | 云打包 CLI 依赖它运行；版本不对会编译失败 |
+| **DCloud 账号** | 同一账号 | AppId `__UNI__38009BA` 跟账号走，云打包不受影响 |
+| **Node 系统级 PATH** | 一次性管理员操作 | 见下方「真机打包」第 2 步（HBuilderX 编译环节只认 Machine 级 PATH） |
+
+### 3. 装完验证
+```bash
+node -v   # 应 ≥ v18（推荐 v20.x 或 v22.x）
+npm -v
+git --version
+```
+
+---
+
 ## 页面清单（16 屏）
 
 | 类型 | 页面 |
@@ -48,6 +77,8 @@
 ---
 
 ## 快速开始（本地开发）
+
+> 前置：先装好 **Node.js ≥ 18（推荐 20 LTS）** 与 Git，见上方「新电脑从零环境准备」。日常开发只需 Node + npm，**无需 HBuilderX**。
 
 ```bash
 # 拉取工程（新机器）
@@ -103,3 +134,4 @@ npm run dev:h5        # 浏览器预览（H5）
 
 - `node_modules/`、`unpackage/`、`dist/`、`*.log`、`covers/` 已被 `.gitignore` 忽略（可重建 / 无关产物）。
 - `app/node_modules_bak*` 为本机历史残留，已忽略，可在文件管理器手动删除，不影响任何功能。
+- 根目录 `covers/` 为封面源素材、已被 gitignore，且 **App 运行时不引用它**（书架封面走 `app/static/xiyouji_cover.png`，已入库），clone 后缺失不影响 App 运行；`covers/` 仅用于原型 HTML 本地预览，需要时可从旧机拷贝或重新生成。
