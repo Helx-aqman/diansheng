@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>典声 · 本机开发环境清单</title>
+<style>
+:root{--primary:#bf5a3c;--primary-soft:#f7e9e3;--bg:#f5f6f8;--card:#ffffff;--ink:#3a3a3a;--muted:#888;--line:#e8e9ee;--gold:#cf9f3f;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg);line-height:1.7;}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px 60px;}
+header{background:linear-gradient(135deg,#fbf2ee,#f4e7e1);color:var(--primary);padding:34px 20px;text-align:center;border-radius:0 0 18px 18px;margin-bottom:28px;border-bottom:1px solid #ecd9d0;}
+header h1{font-size:25px;letter-spacing:1px;color:var(--primary);}
+header p{margin-top:8px;color:#9a6a55;font-size:14px;}
+.meta{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--muted);}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:20px;box-shadow:0 1px 2px rgba(0,0,0,.03);}
+h2{color:var(--primary);font-size:19px;margin-bottom:14px;padding-left:12px;border-left:4px solid var(--primary);}
+h3{color:#a8553a;font-size:15px;margin:16px 0 8px;}
+p,li{font-size:14px;color:#444;}
+ul{padding-left:22px;margin:6px 0;}
+a{color:var(--primary);text-decoration:none;border-bottom:1px dashed var(--primary);}
+a:hover{color:#9a3a22;}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;}
+th,td{border:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top;}
+th{background:var(--primary-soft);color:var(--primary);font-weight:600;}
+tbody tr:nth-child(even){background:#faf7f5;}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:700;}
+.tag.now{background:#e7f3e3;color:#4a8a2f;}
+.tag.later{background:#f3efe7;color:#9a7b2f;}
+.note{background:#fbf3e8;border-left:4px solid var(--gold);padding:10px 14px;border-radius:6px;font-size:13px;margin-top:10px;color:#7a5a2a;}
+.ok{background:#e7f3e3;border-left:4px solid #4a8a2f;padding:10px 14px;border-radius:6px;font-size:13px;margin-top:10px;color:#3a6a22;}
+.footer{text-align:center;color:#aaa;font-size:12px;margin-top:30px;}
+code{background:#f3ece8;padding:1px 6px;border-radius:4px;font-size:12px;color:#9a4a2a;}
+</style>
+</head>
+<body>
+<header>
+<h1>典声 · 本机开发环境清单</h1>
+<p>含下载地址 · 按 MVP 验证 / 第二阶段 分装</p>
+<div class="meta"><span>版本 v1.0</span><span>日期 2026-08-18</span><span>APP 框架：uni-app (Vue3)</span></div>
+</header>
+<div class="wrap">
+
+<section>
+<h2>0. 已具备（不用装）</h2>
+<div class="ok">以下环境已就绪，WorkBuddy 可直接调用，你无需任何操作：</div>
+<ul>
+<li><b>Node.js 22.22.2</b>（隔离环境，用于 Taro CLI / 后端脚本）</li>
+<li><b>Python 3.13.12</b>（隔离环境，用于内容中台：分句对齐 + 评书生成 + TTS）</li>
+<li><b>WorkBuddy 智能体</b>：可写 uni-app 代码、跑 Python 流水线、出可点击 HTML 原型</li>
+</ul>
+</section>
+
+<section>
+<h2>1. 必装 · MVP 验证阶段</h2>
+<p>小程序 Demo + Android APP 本地调试的最小集。建议按表格顺序装。</p>
+<table>
+<thead><tr><th>工具</th><th>用途</th><th>下载地址</th><th>备注</th></tr></thead>
+<tbody>
+<tr><td><b>微信开发者工具</b><br>(Stable 版)</td><td>小程序唯一编译/调试/真机预览环境</td><td><a href="https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html" target="_blank">developers.weixin.qq.com/.../devtools/download.html</a></td><td>约 500MB；Windows 选 Stable 64位</td></tr>
+<tr><td><b>微信小程序 AppID</b><br>(账号注册)</td><td>真机预览 + 后续上架/支付</td><td><a href="https://mp.weixin.qq.com/" target="_blank">mp.weixin.qq.com</a></td><td>个人号够做 Demo；上架+支付需企业号</td></tr>
+<tr><td><b>Android Studio</b><br>(含 Android SDK + AVD)</td><td>Android APP 开发 + 模拟器 + 真机调试</td><td><a href="https://developer.android.google.cn/studio" target="_blank">developer.android.google.cn/studio</a></td><td>下载+SDK+镜像约 5–8GB，预留空间</td></tr>
+<tr><td><b>JDK 17</b></td><td>Android 构建依赖</td><td><a href="https://adoptium.net/zh-CN/temurin/releases/?version=17" target="_blank">adoptium.net (Temurin 17)</a></td><td>Android Studio 新版多已自带，可不单独装</td></tr>
+<tr><td><b>HBuilderX</b></td><td>uni-app (Vue3) 开发器，出小程序+APP</td><td><a href="https://www.dcloud.io/hbuilderx.html" target="_blank">dcloud.io/hbuilderx.html</a></td><td>框架已定 uni-app，必装</td></tr>
+<tr><td><b>Taro CLI</b><br>(可选)</td><td>若改用 Taro 跨端，则替代 HBuilderX</td><td><a href="https://taro.jd.com/" target="_blank">taro.jd.com</a><br><code>npm i -g @tarojs/cli</code></td><td>本项目默认走 uni-app，此项留作备选</td></tr>
+<tr><td><b>Python 依赖</b><br>(内容中台)</td><td>分句对齐 + 评书生成 + 本地试音</td><td>pip: <code>edge-tts</code> <code>openai</code> <code>requests</code></td><td>由 WorkBuddy 在隔离环境安装，你只给 LLM Key</td></tr>
+</tbody>
+</table>
+<div class="note"><b>真机调试建议：</b>听书是音频 App，模拟器播声音/性能别扭。开手机「开发者选项 → USB 调试」，数据线连电脑即可在 Android Studio / HBuilderX 里跑、打断点，比模拟器顺。</div>
+</section>
+
+<section>
+<h2>2. APP 框架决策（已定）</h2>
+<div class="ok">选 <b>uni-app (Vue3)</b>。理由：一套代码出小程序+APP → 可维护性最高；书架扩充是数据驱动 → 可扩展性够；开发效率最高 → MVP 最快验证。深度音频能力（后台播放/锁屏/离线）用 App 端原生引擎实现，成熟方案。</div>
+<p>若将来小程序不再是主入口、或要像素级大字清晰 UI，再局部补 Flutter / 原生，不冲突。</p>
+</section>
+
+<section>
+<h2>3. 第二阶段才需要（先别装 · 占坑）</h2>
+<table>
+<thead><tr><th>工具 / 账号</th><th>用途</th><th>申请地址</th><th>阶段</th></tr></thead>
+<tbody>
+<tr><td>微信支付商户号</td><td>会员订阅 / 分享卡赠送</td><td><a href="https://pay.weixin.qq.com/" target="_blank">pay.weixin.qq.com</a></td><td>第二阶段</td></tr>
+<tr><td>优量汇</td><td>小程序端广告（激励解锁）</td><td><a href="https://youlianghui.qq.com/" target="_blank">youlianghui.qq.com</a></td><td>第二阶段</td></tr>
+<tr><td>穿山甲</td><td>APP 端多 DSP 广告聚合</td><td><a href="https://www.pangle.cn/" target="_blank">pangle.cn</a></td><td>第二阶段</td></tr>
+<tr><td>腾讯云 COS + CDN</td><td>音频文件托管与分发</td><td><a href="https://cloud.tencent.com/product/cos" target="_blank">cloud.tencent.com/product/cos</a></td><td>第二阶段</td></tr>
+<tr><td>后端服务 + 埋点看板</td><td>听书时长 / 完播率 / 留存 / 转化</td><td>自搭（Node/Python）</td><td>第二阶段</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>4. 推荐落地顺序</h2>
+<ol>
+<li><b>装微信开发者工具 + 注册 AppID</b> → 小程序 Demo 能跑起来看效果</li>
+<li><b>内容中台先验证</b>：WorkBuddy 用 Python + <code>edge-tts</code> 跑一段《西游记》"一句原文+一句评书讲解"样例音频（你只提供 LLM Key），让你立刻听到产品感觉</li>
+<li><b>装 Android Studio + HBuilderX</b> 放着；uni-app 工程骨架由 WorkBuddy 搭，APP 完整版等第二阶段</li>
+</ol>
+</section>
+
+<section>
+<h2>5. LLM 评书生成 · Key 申请（二选一给即可）</h2>
+<table>
+<thead><tr><th>服务商</th><th>控制台地址</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>DeepSeek</td><td><a href="https://platform.deepseek.com/" target="_blank">platform.deepseek.com</a></td><td>便宜、中文好，MVP 首选</td></tr>
+<tr><td>智谱 GLM</td><td><a href="https://open.bigmodel.cn/" target="_blank">open.bigmodel.cn</a></td><td>国产合规，长文本友好</td></tr>
+<tr><td>通义千问</td><td><a href="https://dashscope.console.aliyun.com/" target="_blank">dashscope.console.aliyun.com</a></td><td>阿里云生态，多模态</td></tr>
+<tr><td>OpenAI</td><td><a href="https://platform.openai.com/" target="_blank">platform.openai.com</a></td><td>通用，需海外网络</td></tr>
+</tbody>
+</table>
+<div class="note">TTS 多音色（悟空/唐僧角色音）为 P2 增值项，第二阶段再上讯飞/火山/阿里云，需各自密钥；MVP 先用免费 <code>edge-tts</code> 验证听感。</div>
+</section>
+
+<div class="footer">典声 · 本机开发环境清单 v1.0 — 由 WorkBuddy 整理</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+{
+    "name" : "典声",
+    "appid" : "__UNI__38009BA",
+    "description" : "名著评书伴读：一句原文，一句评书讲解",
+    "versionName" : "1.0.0",
+    "versionCode" : "100",
+    "transformPx" : false,
+    "app-plus" : {
+        "usingComponents" : true,
+        "compilerVersion" : 3,
+        "nvueStyleCompiler" : "uni-app",
+        "splashscreen" : {
+            "autoclose" : true,
+            "waiting" : true,
+            "delay" : 0
+        },
+        "modules" : {},
+        "distribute" : {
+            "android" : {
+                "packName" : "com.diansheng.app",
+                "permissions" : [
+                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>"
+                ]
+            },
+            "sdkConfigs" : {},
+            "ios" : {
+                "dSYMs" : false
+            }
+        }
+    },
+    "h5" : {
+        "title" : "典声 · 名著评书伴读",
+        "router" : {
+            "mode" : "hash",
+            "base" : "./"
+        },
+        "optimization" : {
+            "treeShaking" : {
+                "enable" : true
+            }
+        }
+    },
+    "vueVersion" : "3"
+}

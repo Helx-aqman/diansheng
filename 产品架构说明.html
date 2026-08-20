@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>典声 · 名著评书伴读 产品架构说明</title>
+<style>
+:root{--primary:#bf5a3c;--primary-soft:#f7e9e3;--bg:#f5f6f8;--card:#ffffff;--ink:#3a3a3a;--muted:#888;--line:#e8e9ee;--gold:#cf9f3f;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink);background:var(--bg);line-height:1.7;}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px 60px;}
+header{background:linear-gradient(135deg,#fbf2ee,#f4e7e1);color:var(--primary);padding:34px 20px;text-align:center;border-radius:0 0 18px 18px;margin-bottom:28px;border-bottom:1px solid #ecd9d0;}
+header h1{font-size:26px;letter-spacing:1px;color:var(--primary);}
+header p{margin-top:8px;color:#9a6a55;font-size:14px;}
+.meta{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--muted);}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 24px;margin-bottom:20px;box-shadow:0 1px 2px rgba(0,0,0,.03);}
+h2{color:var(--primary);font-size:19px;margin-bottom:14px;padding-left:12px;border-left:4px solid var(--primary);}
+h3{color:#a8553a;font-size:15px;margin:16px 0 8px;}
+p,li{font-size:14px;color:#444;}
+ul{padding-left:22px;margin:6px 0;}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;}
+th,td{border:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top;}
+th{background:var(--primary-soft);color:var(--primary);font-weight:600;}
+tbody tr:nth-child(even){background:#faf7f5;}
+.p0{color:#cf4b3a;font-weight:700;}
+.p1{color:#d98a2b;font-weight:700;}
+.p2{color:#6a9a3a;font-weight:700;}
+.arch{display:flex;flex-direction:column;gap:12px;}
+.row{display:flex;gap:12px;flex-wrap:wrap;}
+.card{flex:1;min-width:200px;border:1px solid var(--line);border-radius:10px;padding:14px;background:#fbf8f6;}
+.card b{color:var(--primary);}
+.note{background:#fbf3e8;border-left:4px solid var(--gold);padding:10px 14px;border-radius:6px;font-size:13px;margin-top:10px;color:#7a5a2a;}
+.footer{text-align:center;color:#aaa;font-size:12px;margin-top:30px;}
+</style>
+</head>
+<body>
+<header>
+<h1>典声 · 名著评书伴读</h1>
+<p>产品架构说明与功能列表</p>
+<div class="meta"><span>版本 v1.1</span><span>日期 2026-08-18</span><span>状态 产品定义（原型已设计，与样式原型对齐）</span></div>
+</header>
+<div class="wrap">
+
+<section>
+<h2>1. 产品概览</h2>
+<p><b>一句话定位：</b>面向经典名著爱好者的「名著评书伴读」听书产品——用 AI 把《西游记》等经典名著做成"一句原文 + 一句评书式讲解"的对照式伴读，让用户边听边读懂原著。大字清晰的界面让不同年龄段都能轻松使用，不主打"老年"标签，靠跨年龄经典内容自然获客。</p>
+<h3>目标用户</h3>
+<ul>
+<li><b>核心：</b>想"听懂原著"的经典名著爱好者——既有爱听评书/戏曲的中老年，也有通勤、陪娃场景下的年轻听众；看过 86 版《西游记》等影视，却极少读过原著。</li>
+<li><b>使用场景：</b>家务/通勤/晨练/睡前等碎片时间，边做边听；也适合亲子共听、与好友分享同听。</li>
+</ul>
+<h3>核心价值主张</h3>
+<ul>
+<li><b>有趣：</b>评书腔讲解消解原文晦涩，半文半白不再劝退。</li>
+<li><b>有得：</b>"终于把名著读完"的成就感，替代"只看过热播剧"的遗憾。</li>
+<li><b>有伴：</b>听书即陪伴，让独处时光更充实，也适合亲子共听、与好友分享同听。</li>
+</ul>
+<h3>与竞品差异</h3>
+<p>市面有声书多为<b>纯朗读</b>或<b>纯评书</b>；本产品是稀缺的<b>对照式伴读</b>（原文 + 讲解逐句对齐），既保原著原貌，又降低理解门槛，且全内容 AI 生成、可无限扩展书架。</p>
+</section>
+
+<section>
+<h2>2. 载体与产品架构</h2>
+<p>采用<b>双轨载体</b>：微信小程序做轻量免费听书与分享，Android APP 做完整会员闭环。积分体系仅用于兑换<b>虚拟听书权益</b>（解锁章节、角色音色、畅听券等），明确不可提现，与"网赚违规"红线隔离，合规安全。</p>
+<div class="arch">
+<div class="row">
+<div class="card"><b>微信小程序（引流 + 分享）</b><br>免费试听前 N 回、激励视频解锁、分享给好友、简易分享。在零广告位风险边界内运营。</div>
+<div class="card"><b>Android APP（完整闭环）</b><br>全书架会员畅听、多 DSP 广告聚合、离线下载、角色音色、大字清晰模式。iOS 上纯听书版。</div>
+</div>
+<div class="row">
+<div class="card"><b>内容中台</b><br>AI 伴读生成流水线 + 审核三道闸，统一供给双端。</div>
+<div class="card"><b>变现中台</b><br>会员订阅、广告聚合 SDK、支付与对账、积分与任务中心。</div>
+</div>
+</div>
+</section>
+
+<section>
+<h2>3. 内容架构</h2>
+<h3>3.1 对照式伴读格式</h3>
+<p>每一回拆为若干"句"：<b>一句原文（大字高亮）+ 一句评书式讲解（口语化、有悬念包袱、人物语气）</b>。半文半白处自动难词弹注。同一格式可复用至任意公版名著。</p>
+<h3>3.2 名著货架路线图</h3>
+<div class="arch">
+<div class="row">
+<div class="card"><b>① 英雄单品：西游记</b><br>100 回，全民认知、半文半白最适合破冰，先做前 10–20 回 Demo。</div>
+<div class="card"><b>② 扩展：四大名著</b><br>三国演义、水浒传、红楼梦，同格式复用。</div>
+<div class="card"><b>③ 公版名著库</b><br>封神演义、聊斋、儒林外史、三言二拍、说岳全传等。</div>
+</div>
+</div>
+<p class="note">内容线聚焦「公版名著评书伴读」：西游记 → 四大名著 → 公版名著库。抗日经典等其它题材不在本产品范围内。</p>
+<h3>3.3 内容生产流水线（AI 中台）</h3>
+<ul>
+<li><b>原文分句与对齐：</b>公版文本正确断句，原文/讲解逐句配对。</li>
+<li><b>评书腔生成：</b>Prompt 框架钉死口语化、包袱感、角色语气，避免"AI 味"。</li>
+<li><b>三道闸审核：</b>① 公版版权校验；② 事实约束（锁大事年表，虚构限细节）；③ 价值观/宗教尺度人审抽检。</li>
+<li><b>AI 标识注入：</b>音频起止语音提示"本讲解由 AI 生成" + 元数据隐式标识（依《人工智能生成合成内容标识办法》2025-09-01 施行）。</li>
+</ul>
+</section>
+
+<section>
+<h2>4. 功能列表</h2>
+<table>
+<thead><tr><th>模块</th><th>功能点</th><th>说明</th><th>优先级</th></tr></thead>
+<tbody>
+<tr><td rowspan="5">听书伴读引擎</td><td>对照式播放</td><td>原文高亮 + 评书讲解逐句切换/同屏</td><td class="p0">P0</td></tr>
+<tr><td>播放控制</td><td>倍速 0.75–2x、断点续听、定时关闭</td><td class="p0">P0</td></tr>
+<tr><td>离线下载</td><td>WiFi 下缓存整回，无网可听</td><td class="p1">P1</td></tr>
+<tr><td>难词弹注</td><td>半文半白生僻词点击即释</td><td class="p1">P1</td></tr>
+<tr><td>角色音色</td><td>悟空/唐僧等分化 AI 音色（增值）</td><td class="p2">P2</td></tr>
+<tr><td rowspan="3">内容货架</td><td>分类导航</td><td>按书名/回目浏览，封面与简介</td><td class="p0">P0</td></tr>
+<tr><td>书架与续听</td><td>收藏、最近续听、收听进度</td><td class="p0">P0</td></tr>
+<tr><td>运营位</td><td>新书推荐、限免、听书榜单</td><td class="p1">P1</td></tr>
+<tr><td rowspan="4">会员与支付</td><td>会员订阅</td><td>月/年费畅听全货架</td><td class="p0">P0</td></tr>
+<tr><td>购买支付闭环</td><td>确认订单→微信支付→成功</td><td class="p0">P0</td></tr>
+<tr><td>登录/账号</td><td>微信一键登录，跨端续听与支付前提</td><td class="p0">P0</td></tr>
+<tr><td>试听/限免</td><td>前 N 回免费、章节试听</td><td class="p0">P0</td></tr>
+<tr><td rowspan="2">免费广告层</td><td>激励解锁</td><td>看广告解锁后续章节（非积分提现）</td><td class="p0">P0</td></tr>
+<tr><td>广告聚合</td><td>小程序用优量汇；APP 接多 DSP（穿山甲等）</td><td class="p1">P1</td></tr>
+<tr><td rowspan="3">成长与激励体系</td><td>任务中心</td><td>每日签到/听完推荐回/分享等任务发放积分</td><td class="p1">P1</td></tr>
+<tr><td>积分体系</td><td>积分解锁章节、兑换角色音色/畅听券等虚拟权益，不可提现</td><td class="p1">P1</td></tr>
+<tr><td>成就/勋章</td><td>连续听书、听完整本等虚拟荣誉（非现金）</td><td class="p2">P2</td></tr>
+<tr><td rowspan="3">易用体验</td><td>大字清晰模式</td><td>超大字、大按钮、高对比、去冗余</td><td class="p0">P0</td></tr>
+<tr><td>语音导航</td><td>"听西游记第几回"语音唤起</td><td class="p1">P1</td></tr>
+<tr><td>一键求助</td><td>在线客服协助入口</td><td class="p2">P2</td></tr>
+<tr><td rowspan="4">内容生产（AI 中台）</td><td>分句对齐</td><td>原文分句与讲解配对</td><td class="p0">P0</td></tr>
+<tr><td>评书生成</td><td>评书腔讲解 Prompt 框架</td><td class="p0">P0</td></tr>
+<tr><td>审核三道闸</td><td>版权 + 事实 + 价值观人审</td><td class="p0">P0</td></tr>
+<tr><td>标识注入</td><td>起止语音提示 + 元数据隐式标识</td><td class="p0">P0</td></tr>
+<tr><td rowspan="3">合规与安全</td><td>公版校验</td><td>确保文本公版、注解为原创</td><td class="p0">P0</td></tr>
+<tr><td>尺度审核</td><td>宗教/民俗不宣扬迷信、不调侃</td><td class="p1">P1</td></tr>
+<tr><td>协议隐私</td><td>用户协议、隐私政策、AI 标识告知</td><td class="p0">P0</td></tr>
+<tr><td rowspan="2">数据运营</td><td>核心看板</td><td>听书时长、完播率、留存、付费转化</td><td class="p1">P1</td></tr>
+<tr><td>内容排期</td><td>按章节热度安排生成优先级</td><td class="p2">P2</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>5. 商业模式映射</h2>
+<div class="arch">
+<div class="row">
+<div class="card"><b>引流免费层</b><br>西游记前 N 回免费听 + 激励视频广告解锁。名著无广告禁令，合规安全。</div>
+<div class="card"><b>主变现层</b><br>会员订阅畅听全货架 + 激励广告，主力收入。</div>
+</div>
+<div class="row">
+<div class="card"><b>衍生层</b><br>有声书周边/硬件带货、智能音箱与车机预装分成、AI 评书内容 B 端授权。</div>
+<div class="card"><b>公共采购（可选）</b><br>名著伴读进社区/老年大学作为文化惠民工程。</div>
+</div>
+</div>
+</section>
+
+<section>
+<h2>6. 合规红线</h2>
+<ul>
+<li><b>AI 标识义务：</b>《人工智能生成合成内容标识办法》2025-09-01 施行，音频须起止语音提示 + 元数据隐式标识，协议告知。</li>
+<li><b>公版版权：</b>名著原文公版可用；不得直接搬运出版社校注本的注解（有版权），评书讲解须为 AI 原创。</li>
+<li><b>广告合规：</b>"看广告解锁内容"合规；"看广告积分提现"属网赚违规（下架+封主体），坚决不做。</li>
+<li><b>宗教/民俗尺度：</b>西游记神佛道教内容定位"文学经典+民俗文化"，不宣扬迷信、不调侃宗教。</li>
+<li><b>载体边界：</b>小程序仅用优量汇；多 DSP 聚合须放 APP；iOS 仅上纯听书版。</li>
+</ul>
+</section>
+
+<section>
+<h2>7. 技术架构（简要）</h2>
+<ul>
+<li><b>前端：</b>微信小程序（原生/Taro）+ Android（跨端），统一清晰大字组件库。</li>
+<li><b>内容中台：</b>原文库（公版）→ 分句服务 → LLM 评书生成 → 审核队列 → TTS（多音色）→ 标识注入 → CDN。</li>
+<li><b>变现：</b>微信支付（会员订阅）+ 广告 SDK（优量汇/穿山甲聚合）+ 积分/任务中心。</li>
+<li><b>数据：</b>听书行为埋点 → 看板（时长/完播/留存/转化）。</li>
+</ul>
+</section>
+
+<section>
+<h2>8. MVP 范围与里程碑</h2>
+<h3>第一阶段（验证）</h3>
+<ul>
+<li>《西游记》前 10–20 回对照式伴读 Demo（小程序端）。</li>
+<li>验证：评书腔是否"有趣"、老人是否愿为后续回目付费、免费广告层完播与 eCPM。</li>
+</ul>
+<div class="note">原型对齐：样式原型（产品样式原型.html）已覆盖 书架/伴读/发现/搜索/详情/会员/设置/我的 等主屏，以及 登录、激励视频解锁（看广告 / 书豆 双通道）、任务中心、书豆积分明细与兑换、确认订单→微信支付→支付成功、离线下载管理 等流程，与本文档功能列表一致。其中「任务中心 + 书豆积分」已落地：书豆（虚拟积分，命名"书豆"）通过每日签到 / 听完推荐回 / 分享好友 等任务与 听完一整本 / 连续听书 7 天 等成长任务获取，仅可兑换解锁章节、畅听券、角色音色等虚拟听书权益，<b>不可提现</b>。</div>
+<h3>第二阶段（扩量）</h3>
+<ul>
+<li>铺满《西游记》100 回；上线会员 + 积分任务体系；APP 完整版。</li>
+<li>扩展四大名著，同格式复用生产线。</li>
+</ul>
+<h3>第三阶段（货架）</h3>
+<ul>
+<li>公版名著库持续扩充；衍生层（带货/预装/授权）试水。</li>
+</ul>
+<div class="note">注：本项目文件夹名为「听书伴读」，产品对外名称为「典声 · 名著评书伴读」。</div>
+</section>
+
+<div class="footer">典声 · 名著评书伴读 — 产品架构说明 v1.1</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+/* ============ 全局主题变量 ============ */
+:root {
+  --primary: #e8823a;
+  --bg: #fff7f0;
+  --card: #ffffff;
+  --ink: #2a1c12;
+  --muted: #8a7a6c;
+  --line: #f0e2d6;
+  --green: #5a8a3f;
+}
+[data-theme="vermilion"] {
+  --primary: #c8453b;
+  --bg: #fdf2f0;
+  --line: #f3ddd9;
+}
+[data-theme="green"] {
+  --primary: #2f6b5e;
+  --bg: #f1f6f4;
+  --line: #dde9e5;
+}
+
+/* ============ 大字清晰模式 ============ */
+.easy { --ink: #1c120c; }
+.easy .orig-txt { font-size: 30px !important; line-height: 1.7 !important; }
+.easy .talk-txt { font-size: 23px !important; line-height: 1.7 !important; }
+.easy .b-name { font-size: 18px !important; }
+.easy .sec-title { font-size: 20px !important; }
+.easy .page-font { font-size: 19px !important; }
+
+/* ============ 通用类 ============ */
+page, uni-page-body, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 16px;
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 24px;
+  font-weight: 500;
+}
+.btn-primary:active { opacity: 0.85; }
+.sec-title {
+  font-size: 17px;
+  font-weight: 500;
+  margin: 18px 16px 10px;
+  color: var(--ink);
+}
+.page-font { font-size: 16px; color: var(--ink); }
+.muted { color: var(--muted); }
+
+/* 自定义导航栏：原生导航栏已全局关闭，统一用各页 .topbar。
+   顶部需避让系统状态栏（时钟/电量），高度由 App.vue 写入的 --sbh 提供。
+   用 !important 覆盖各页 scoped 的 .topbar padding 顶部值，只改 top，不动左右。 */
+.topbar {
+  padding-top: calc(var(--sbh, 0px) + 14px) !important;
+}

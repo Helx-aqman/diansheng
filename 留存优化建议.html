@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>典声 · 用户留存与粘性优化建议</title>
+<style>
+:root{--primary:#e8823a;--primary-soft:#fdeee2;--gold:#d4a13c;--cream:#fbf6ef;--card:#fffdfa;--ink:#2e2620;--muted:#8a7568;--line:#f0ddd0;--green:#5a8a3f;--p0:#c8453b;--p1:#d4a13c;--p2:#2f6b5e;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#f3ece3;color:var(--ink);line-height:1.75;padding:40px 16px;}
+.wrap{max-width:880px;margin:0 auto;background:var(--card);border-radius:18px;padding:40px 44px;box-shadow:0 10px 30px rgba(0,0,0,.08);}
+h1{font-size:28px;color:var(--primary);margin-bottom:6px;}
+.meta{color:var(--muted);font-size:13px;margin-bottom:26px;}
+h2{font-size:20px;color:var(--ink);margin:30px 0 12px;padding-left:12px;border-left:5px solid var(--primary);}
+h3{font-size:16px;color:var(--primary);margin:18px 0 8px;}
+p{font-size:15px;color:#4a3a30;margin-bottom:10px;}
+.tag{display:inline-block;font-size:12px;font-weight:800;padding:2px 10px;border-radius:10px;color:#fff;margin-right:6px;vertical-align:middle;}
+.t0{background:var(--p0);}.t1{background:var(--p1);}.t2{background:var(--p2);}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;}
+th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top;}
+th{background:var(--primary-soft);color:var(--ink);font-weight:800;}
+ul{margin:8px 0 14px 22px;}
+li{margin-bottom:8px;font-size:15px;color:#4a3a30;}
+b{color:var(--ink);}
+.card{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;}
+.card.b0{background:#fcecea;border-color:#eccfc9;}
+.card.b1{background:#fbf3e2;border-color:#ecdcb6;}
+.card.b2{background:#eaf2ef;border-color:#cfe2db;}
+.kpi{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0;}
+.kpi .k{flex:1;min-width:150px;background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:14px;}
+.kpi .k b{display:block;font-size:22px;color:var(--primary);}
+.kpi .k span{font-size:13px;color:var(--muted);}
+.note{background:#fff8ec;border-left:4px solid var(--gold);padding:12px 16px;border-radius:8px;font-size:14px;color:#6a5526;margin:14px 0;}
+.fly{background:linear-gradient(135deg,#3a2a22,#5a3f2e);color:#f3e3c8;border-radius:14px;padding:20px;margin:14px 0;font-size:14px;line-height:1.9;}
+.fly b{color:#f0c96a;}
+.foot{margin-top:30px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>典声 · 用户留存与粘性优化建议</h1>
+<div class="meta">版本 v1.0　日期 2026-08-18　状态 设计优化输入（配合《产品样式原型》）</div>
+
+<p>本建议围绕<strong>「如何把用户从「偶尔打开」变成「每天听一段」</strong>展开。结论先放前面：留存的核心不是多塞功能，而是<strong>养成习惯 + 不中断的连续消费 + 持续回访钩子</strong>三件事。本产品不主打"老年"标签，依靠跨年龄的经典内容 + 清晰的听书体验自然吸引中老年与年轻听众，因此留存策略聚焦在<strong>内容习惯与轻激励</strong>，而非亲情绑定。</p>
+
+<div class="kpi">
+<div class="k"><b>3 天</b><span>新用户能否形成首次习惯的关键窗口</span></div>
+<div class="k"><b>21 天</b><span>连续收听形成稳定习惯的常用周期</span></div>
+<div class="k"><b>1 套钩子</b><span>任务中心 + 积分激励是低成本回访杠杆</span></div>
+</div>
+
+<h2>一、为什么留存是这款产品的命门</h2>
+<ul>
+<li><b>用户天然低频启动</b>：听书不像刷短视频有强惯性，用户需要「想起 + 找到 + 会操作」才会打开，首周流失率最高，留存决定内容价值能否兑现。</li>
+<li><b>对照式伴读是慢内容</b>：一回 10 分钟，靠「每天一段」累积，而非一次性消费，留存直接决定内容价值能否兑现。</li>
+<li><b>清晰易用即留存</b>：大字、语音、误触防护做不好，用户一次受挫就可能不再回来——尤其对不熟练的智能机用户。</li>
+<li><b>轻激励制造回访理由</b>：任务中心 + 积分让"每天打开"有了小目标，是同行验证过的低成本留存杠杆（番茄畅听靠签到金币拉活）。</li>
+</ul>
+
+<h2>二、留存飞轮模型</h2>
+<div class="fly">
+<b>听书习惯</b>（打卡/日历/连续天数）　→　<b>连续消费不中断</b>（自动续播/智能续听/场景入口）<br>
+→　<b>轻激励回访</b>（任务中心 + 积分奖励，每日打开有目标）　→　<b>内容沉淀</b>（书架越听越多、成就解锁）<br>
+→　<b>自发分享与召回</b>（分享给好友、微信服务通知提醒）　→　回到「听书习惯」，飞轮加速。
+</div>
+<p class="note">本飞轮聚焦<strong>「用户本人 + 内容 + 轻激励」</strong>的自循环，不依赖亲情绑定。产品不主打"老年"标签，靠跨年龄经典内容 + 清晰体验自然获客，留存策略因此更通用、更可规模化。</p>
+
+<h2>三、竞品对标（同类/同品类留存机制）</h2>
+<table>
+<tr><th>产品</th><th>留存主打手段</th><th>可借鉴 / 需注意</th></tr>
+<tr><td><b>番茄畅听</b><br><span style="color:var(--muted);font-size:13px">免费+激励视频</span></td><td>连续签到 7 天送大额金币包；听满 5/15/30/60 分钟领金币；智能断点续播；兴趣推荐；任务中心（看广告/开宝箱/小游戏）</td><td><b>借鉴</b>：连续听奖励、断点续播、每日推荐。<br><b>注意</b>：其「金币→微信零钱提现」与我们的合规红线（不做积分提现）冲突，<b>不能抄现金化</b>，改用虚拟成就。</td></tr>
+<tr><td><b>喜马拉雅</b><br><span style="color:var(--muted);font-size:13px">头部听书</span></td><td>每日签到（连 7 天送会员体验）；听书打卡/周周打卡；成就勋章体系；千人千面推荐（每日必听/听单）；「养小雅」养成游戏；社交关系链</td><td><b>借鉴</b>：打卡+勋章的成就体系、「养小雅」养成系（可改编为经典听书的陪伴感）、连续播放。<br><b>注意</b>：其 UGC/社交偏复杂，我们的产品端应极简。</td></tr>
+<tr><td><b>微信听书</b><br><span style="color:var(--muted);font-size:13px">微信生态</span></td><td>微信关系链分享；微信支付闭环；服务通知召回</td><td><b>借鉴</b>：服务通知召回（新书上架/断听提醒）天然适配我们的小程序载体。</td></tr>
+<tr><td><b>凯叔讲故事</b><br><span style="color:var(--muted);font-size:13px">儿童·可类比成长体系</span></td><td>每日更新养成习惯；成长体系；家长报告；勋章</td><td><b>借鉴</b>：其「家长报告 / 成长体系」思路可抽象为<strong>用户自己的听书成长报告</strong>（听了多久、解锁多少回、得什么勋章），作为正向反馈而非亲情绑定。</td></tr>
+<tr><td><b>懒人听书 / 蜻蜓FM</b><br><span style="color:var(--muted);font-size:13px">电台式</span></td><td>连续播放电台流；场景频道（助眠/开车/运动）</td><td><b>借鉴</b>：场景化入口降低「不知听啥」的决策成本。</td></tr>
+</table>
+
+<h2>四、优化建议（按优先级）</h2>
+
+<div class="card b0">
+<h3><span class="tag t0">P0</span>习惯养成 + 连续消费（MVP 必做，直接拉留存）</h3>
+<ul>
+<li><b>自动连续播放下一回</b>：当前播放页只有单回 + 手动上下集，缺「播完自动续下一回」。这是听书留存第一刚需——用户不会每次手动点下一回。参考番茄/喜马拉雅的智能续播。</li>
+<li><b>听书日历 / 连续打卡</b>：在「我的」页加「已连续听 N 天 · 本周 X 回」日历卡，绿色高亮听书日。把番茄的「连续签到奖励」改为<strong>非现金的正向反馈</strong>（点亮日历/天数勋章）。</li>
+<li><b>大字清晰模式持久化</b>：当前切换后刷新即丢失，应存 <code>localStorage</code>（与主题/引导一致），避免用户每次重设。</li>
+<li><b>「今日推荐」固定位</b>：首页给一个「今日 15 分钟 · 第 9 回」入口，把决策成本降到一次点击，对应喜马拉雅「每日必听」。</li>
+</ul>
+</div>
+
+<div class="card b1">
+<h3><span class="tag t1">P1</span>召回 + 轻激励（强化留存）</h3>
+<ul>
+<li><b>用户听书成长报告</b>：每周推送「你本周听了 3 回《西游记》，累计 42 分钟，解锁 2 枚勋章」。把凯叔「家长报告」抽象为<strong>用户自己的正向反馈</strong>，而非亲情绑定，避免产品被贴"老年/亲情"标签。</li>
+<li><b>语音交互</b>：最自然的交互是说话。「小听，播西游记第 8 回」「暂停/快进」——既是易用性也是留存（降低操作门槛=降低流失）。当前设置页仅有开关占位，应做成真功能。</li>
+<li><b>轻量成就 / 勋章（非现金）</b>：听完 1 本得「听书达人」、连听 7 天得「持之以恒」勋章。借鉴喜马拉雅勋章，但<strong>绝不做积分提现</strong>，用虚拟荣誉 + 专属音色等虚拟权益。</li>
+<li><b>微信服务通知召回</b>：新书上架、追更、断听 3 天、节日提醒。利用小程序/微信生态天然召回能力。</li>
+<li><b>场景化入口</b>：助眠（睡前定时+白噪音）、晨练、午休——对应蜻蜓场景频道，降低「不知听啥」。</li>
+</ul>
+</div>
+
+<div class="card b2">
+<h3><span class="tag t2">P2</span>差异化放大（建立壁垒）</h3>
+<ul>
+<li><b>陪伴养成系</b>：借鉴喜马拉雅「养小雅」，做「听书小树」——每天听书浇水长大。把「陪伴感」做成留存仪式，契合独处时光的情感需求。</li>
+<li><b>轻书友圈（可选）</b>：用户可发一句听后感想，好友可见，避免复杂社群。定位为内容分享而非亲情绑定。</li>
+<li><b>节日 / 时令内容</b>：中秋赏月诗、春节评书特辑，制造回访理由。</li>
+</ul>
+</div>
+
+<h2>五、与当前原型的差距（明确要补进原型的）</h2>
+<table>
+<tr><th>建议项</th><th>原型现状</th><th>需补充</th></tr>
+<tr><td>自动连续播放</td><td>❌ 仅单回手动上下集</td><td>播放页加「播完自动续播」开关 + 续播逻辑</td></tr>
+<tr><td>听书日历 / 打卡</td><td>❌ 无</td><td>「我的」页加连续天数日历卡</td></tr>
+<tr><td>大字清晰模式持久化</td><td>⚠️ 切换刷新即丢</td><td>接 localStorage</td></tr>
+<tr><td>用户听书成长报告</td><td>❌ 仅分享，无成长反馈</td><td>新增「我的听书报告」示意屏 + 微信通知样式</td></tr>
+<tr><td>语音交互</td><td>⚠️ 设置页仅开关占位</td><td>做成可演示的语音指令入口</td></tr>
+<tr><td>成就 / 勋章</td><td>❌ 无</td><td>「我的」页成就区（虚拟，非现金）</td></tr>
+<tr><td>任务中心 + 书豆积分</td><td>⚠️ 规划中</td><td>已落地：每日/成长任务发书豆，兑换解锁章节 / 畅听券（不可提现，解锁双通道）</td></tr>
+<tr><td>场景化入口</td><td>⚠️ 仅「定时」</td><td>首页/播放页加助眠/晨练等场景</td></tr>
+<tr><td>我的页一级入口</td><td>⚠️ 缺历史/收藏/听书日历</td><td>补齐三入口</td></tr>
+</table>
+<p class="note">合规红线重申：所有激励必须为<strong>虚拟荣誉/权益</strong>（勋章、专属音色），<strong>不得做积分提现、不得现金奖励</strong>——这与《产品架构说明》一致，也区别于番茄畅听的现金化金币。书豆积分已落进原型，仅兑换听书虚拟权益、不可提现。</p>
+
+<h2>六、落地优先级建议</h2>
+<ul>
+<li><b>先搭 APP 前，先把 P0 补进原型</b>：自动续播、听书日历、大字清晰模式持久化、今日推荐——这四项是「听感→习惯」的最小闭环，且成本低、直接拉留存。</li>
+<li><b>用户成长报告作为第二阶段引爆点</b>：它依赖账号+微信生态，是差异化壁垒，建议与支付闭环同期做，形成「听书→报告→续费会员」飞轮。</li>
+<li><b>语音交互与养成系放到第三阶段</b>：体验增益大但实现成本高，待核心留存跑通再上。</li>
+</ul>
+
+<div class="foot">配套文档：《产品样式原型.html》（已接入 任务中心 + 书豆积分，去除 Demo 冗余说明）、《产品架构说明.html》（v1.1，已取消抗日线、对齐原型）。下一步：按 P0 清单迭代原型，再落地 uni-app 工程骨架。</div>
+</div>
+</body>
+</html>

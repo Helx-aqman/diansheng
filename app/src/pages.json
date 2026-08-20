@@ -1,0 +1,38 @@
+{
+  "pages": [
+    { "path": "pages/home/home", "style": { "navigationStyle": "custom", "navigationBarTitleText": "典声" } },
+    { "path": "pages/play/play", "style": { "navigationStyle": "custom", "navigationBarTitleText": "伴读" } },
+    { "path": "pages/vip/vip", "style": { "navigationStyle": "custom", "navigationBarTitleText": "会员中心" } },
+    { "path": "pages/me/me", "style": { "navigationStyle": "custom", "navigationBarTitleText": "我的" } },
+    { "path": "pages/settings/settings", "style": { "navigationStyle": "custom", "navigationBarTitleText": "设置" } },
+    { "path": "pages/discover/discover", "style": { "navigationStyle": "custom", "navigationBarTitleText": "发现" } },
+    { "path": "pages/search/search", "style": { "navigationStyle": "custom", "navigationBarTitleText": "搜索" } },
+    { "path": "pages/detail/detail", "style": { "navigationStyle": "custom", "navigationBarTitleText": "书籍详情" } },
+    { "path": "pages/tasks/tasks", "style": { "navigationStyle": "custom", "navigationBarTitleText": "任务中心" } },
+    { "path": "pages/points/points", "style": { "navigationStyle": "custom", "navigationBarTitleText": "书豆明细" } },
+    { "path": "pages/unlock/unlock", "style": { "navigationStyle": "custom", "navigationBarTitleText": "解锁后续" } },
+    { "path": "pages/downloads/downloads", "style": { "navigationStyle": "custom", "navigationBarTitleText": "离线下载" } },
+    { "path": "pages/login/login", "style": { "navigationBarTitleText": "登录" } },
+    { "path": "pages/order/order", "style": { "navigationStyle": "custom", "navigationBarTitleText": "确认订单" } },
+    { "path": "pages/pay/pay", "style": { "navigationStyle": "custom", "navigationBarTitleText": "微信支付" } },
+    { "path": "pages/paysuccess/paysuccess", "style": { "navigationBarTitleText": "支付结果" } }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "典声",
+    "navigationBarBackgroundColor": "#fff7f0",
+    "backgroundColor": "#fff7f0"
+  },
+  "tabBar": {
+    "color": "#8a7a6c",
+    "selectedColor": "#e8823a",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/home/home", "text": "书架" },
+      { "pagePath": "pages/play/play", "text": "伴读" },
+      { "pagePath": "pages/vip/vip", "text": "会员" },
+      { "pagePath": "pages/me/me", "text": "我的" }
+    ]
+  }
+}

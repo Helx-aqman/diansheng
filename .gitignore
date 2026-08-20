@@ -1,0 +1,26 @@
+# ===== 依赖（机器相关，新机器 npm install 重建） =====
+node_modules/
+# 历史备份残留（node_modules 副本，开发垃圾，新机器 npm install 重建）
+node_modules_bak*/
+
+# ===== 构建 / 打包产物（uni-app 云打包每次重建） =====
+unpackage/
+dist/
+.hbuilderx/
+
+# ===== 日志 =====
+*.log
+
+# ===== 原始封面素材（app/static 已存可用副本） =====
+covers/
+
+# ===== 系统 / 编辑器 =====
+.DS_Store
+Thumbs.db
+*.swp
+
+# ===== 注意：以下必须纳入版本控制，勿忽略 =====
+# app/src/        全部源码（页面/组件/store/mock/utils）
+# app/static/     封面图、App 图标
+# .workbuddy/     项目记忆（MEMORY.md + 每日日志），跨机续作关键上下文
+# 顶层 *.html     产品交付物

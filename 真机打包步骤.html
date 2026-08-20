@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>典声 · 真机打包步骤（Android APK）</title>
+<style>
+:root{--primary:#e8823a;--ink:#2b2b2b;--muted:#9a8f86;--line:#efe6dc;--bg:#fff7f0;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7}
+.wrap{max-width:780px;margin:0 auto;padding:28px 20px 60px}
+h1{font-size:24px;margin:0 0 4px}
+h2{font-size:18px;margin:26px 0 10px;color:var(--primary);border-left:4px solid var(--primary);padding-left:10px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0}
+.tag{display:inline-block;background:#fff3e9;color:var(--primary);font-size:12px;padding:2px 9px;border-radius:10px;margin-right:6px}
+.ok{color:#2e7d5b;font-weight:700}
+.warn{color:#c0392b;font-weight:700}
+ol{padding-left:20px}
+li{margin:8px 0}
+code{background:#f5efe7;padding:1px 6px;border-radius:6px;font-size:13px}
+.note{font-size:13px;color:var(--muted)}
+ul{padding-left:20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>典声 · 真机装包步骤（Android APK）</h1>
+<div class="note">生成时间：2026-08-19 · 工程目录：听书伴读/app</div>
+
+<h2>一句话原理</h2>
+<div class="card">真机装包 = 把工程<b>编译成 APK 文件</b>，再离线安装到手机。这和之前被公司安保禁用的「HBuilderX 真机调试基座」是两回事——不实时联调、不绑基座，<b>能绕开那条限制</b>。</div>
+
+<h2>本机已具备（你不用装）</h2>
+<div class="card">
+<span class="tag">已装</span> HBuilderX：<code>D:\Program Files\HBuilderX\HBuilderX.exe</code><br>
+<span class="tag">已装</span> Android SDK：<code>D:\Program Files\Android\SDK</code>（含 adb）<br>
+<span class="tag">已装</span> JBR Java / keytool（Android Studio 自带）<br>
+<span class="tag">已配</span> 包名 <code>com.diansheng.app</code>、Android 权限（INTERNET / 网络状态 / WAKE_LOCK）<br>
+<span class="tag">已生成</span> App 图标：<code>app/static/app_icon.png</code><br>
+<span class="tag">已确认</span> 工程是标准 uni-app（package.json 含 <code>@dcloudio/uni-app</code>），HBuilderX 会识别为 uni-app 工程
+</div>
+
+<h2>你唯一要过的硬门槛：DCloud 账号</h2>
+<div class="card"><span class="warn">注意：这一步 AI 无法替你做</span>。云打包需要把代码传到 DCloud 云端编译，必须登录你的 DCloud 账号（免费，1 分钟注册）。<br>
+注册：<code>https://dc.cloud.com</code> → 注册 → 记住账号密码，待会在 HBuilderX 里登录，会自动拿回 AppId 填进 manifest。</div>
+
+<h2>六步出包</h2>
+<div class="card"><ol>
+<li><b>开工程</b>：HBuilderX → 文件 → 打开目录 → 选 <code>听书伴读/app</code>。左侧项目应显示「uni-app」类型。<br><span class="note">若误显示成 web：右键工程 → 重新识别项目类型；或确认 package.json 含 @dcloudio/uni-app（已在）。</span></li>
+<li><b>填 AppId</b>：双击 <code>manifest.json</code> → 基础配置 → AppId → 点「重新获取」会跳浏览器登录 DCloud，登录后自动填回。</li>
+<li><b>（可选）配图标</b>：manifest → App 图标配置 → 浏览选 <code>app/static/app_icon.png</code> → 自动切多尺寸。不配则用默认图标，不影响出包。</li>
+<li><b>云打包</b>：顶部菜单 发行 → 原生App-云打包 → 勾选 Android → 打包方式选「<b>使用 DCloud 公共测试证书</b>」（免自己签名）→ 包名已自动是 <code>com.diansheng.app</code> → 确认。<br><span class="note">等云端编译几分钟，HBuilderX 弹下载链接，APK 默认落在 <code>app/unpackage/release/apk/</code>。</span></li>
+<li><b>传手机</b>：APK 文件传到手机，三选一：
+  <ul>
+    <li>微信 / QQ 发文件给自己 → 手机下载 → 点安装（允许「未知来源」）</li>
+    <li>USB 拷贝到手机存储 → 文件管理器点安装</li>
+    <li><code>adb install xxx.apk</code>（本机 SDK 已带 adb，手机开 USB 调试）</li>
+  </ul></li>
+<li><b>安装</b>：手机允许「安装未知应用」→ 完成 → 桌面出现「典声」→ 打开看效果。</li>
+</ol></div>
+
+<h2>AI 能 / 不能替你做</h2>
+<div class="card">
+<span class="ok">能</span>：打包前置全配好（图标、包名、权限、工程结构）；你登录 + 开 HBuilderX 后，我可用 HBuilderX CLI（<code>cli open</code> + <code>cli pack --platform android</code>）帮你一键触发。<br>
+<span class="warn">不能</span>：替你注册 / 登录 DCloud 账号（账号是你的）。本地 Android Studio 打包不需 DCloud，但要 keytool 签名 + 离线工程模板 + Gradle 首次巨量下载，沙箱可能慢 / 拦，<b>不推荐首选</b>。
+</div>
+
+<h2>三种推进方式（你选）</h2>
+<div class="card">
+<b>A</b> 你照上面 6 步自己出包（最稳，账号在你手）— 推荐。<br>
+<b>B</b> 你先去注册 + 登录 DCloud，然后我尝试用 CLI 帮你触发云打包（你仍需登录，但点鼠标少）。<br>
+<b>C</b> 想更完整的话，我先把 tabBar 图标、启动图也生成补齐，再出包。
+</div>
+
+<h2>注意事项</h2>
+<div class="card">
+<span class="tag">纯文字</span> 当前 tabBar 是纯文字（无图标），能正常打包，只是朴素；要好看可后补 4 个 tab 图标（我可生成）。<br>
+<span class="tag">一致性</span> 云打包出的 APK 与现在 <code>localhost:5173</code> 看到的内容完全一致（同一套代码）。<br>
+<span class="tag">权限</span> 已含 INTERNET / 网络状态 / WAKE_LOCK，够当前 mock 用；接真实后端 / 支付 / 广告再加。
+</div>
+</div>
+</body>
+</html>

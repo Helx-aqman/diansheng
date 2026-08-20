@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>典声 · 产品样式原型</title>
+<style>
+:root{
+  --primary:#e8823a;        /* 暖橙·主色，高可见度护眼 */
+  --primary-soft:#fdeee2;
+  --gold:#d4a13c;           /* 点缀金，书名/会员 */
+  --gold-soft:#fbeed3;
+  --cream:#fbf6ef;          /* 页面底 */
+  --card:#fffdfa;           /* 卡片底 */
+  --ink:#2e2620;            /* 高对比正文 */
+  --muted:#8a7568;
+  --line:#f0ddd0;
+  --green:#5a8a3f;          /* 免费/已听 */
+  --radius:16px;
+  --btn-h:54px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:#e9e2d8;display:flex;justify-content:center;padding:24px 12px;color:var(--ink);}
+/* 手机外框 */
+.phone{width:390px;background:var(--cream);border-radius:38px;border:10px solid #2a2018;box-shadow:0 24px 60px rgba(0,0,0,.28);overflow:hidden;position:relative;}
+.statusbar{height:38px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:13px;font-weight:600;}
+.statusbar .dots{display:flex;gap:5px;}
+.statusbar .dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.7);display:block;}
+.screen{height:720px;overflow-y:auto;padding:16px 16px 84px;}
+.screen::-webkit-scrollbar{display:none;}
+/* 顶部栏 */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.brand{font-size:22px;font-weight:800;color:var(--primary);letter-spacing:1px;}
+.brand small{display:block;font-size:11px;color:var(--muted);font-weight:500;letter-spacing:0;}
+.icon-btn{width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--primary);}
+/* 搜索 */
+.search{height:var(--btn-h);border-radius:var(--radius);background:var(--card);border:1px solid var(--line);display:flex;align-items:center;padding:0 16px;gap:10px;color:var(--muted);font-size:17px;margin-bottom:16px;}
+/* banner */
+.banner{border-radius:var(--radius);background-image:linear-gradient(135deg,color-mix(in srgb,var(--primary) 72%,rgba(0,0,0,.45)),color-mix(in srgb,var(--primary) 56%,rgba(0,0,0,.55))),url('covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png');background-size:cover;background-position:top center;color:#fff;padding:18px;margin-bottom:16px;box-shadow:0 6px 16px rgba(0,0,0,.15);position:relative;}
+.banner h3{font-size:20px;margin-bottom:6px;}
+.banner p{font-size:14px;opacity:.92;line-height:1.5;}
+.banner .tag{display:inline-block;background:rgba(255,255,255,.22);padding:3px 10px;border-radius:20px;font-size:12px;margin-top:10px;}
+/* 续听卡 */
+.resume{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:18px;}
+.resume .cover{width:56px;height:74px;border-radius:10px;object-fit:cover;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,.18);}
+.resume .meta b{font-size:18px;}
+.resume .meta p{font-size:13px;color:var(--muted);margin-top:4px;}
+.resume .play{margin-left:auto;width:52px;height:52px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+/* 区块标题 */
+.sec-title{font-size:17px;font-weight:800;color:var(--ink);margin:6px 2px 12px;display:flex;align-items:center;gap:8px;}
+.sec-title::before{content:"";width:5px;height:18px;background:var(--primary);border-radius:3px;display:block;}
+/* 书架网格 */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.book{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center;position:relative;}
+.book .cv{width:100%;height:96px;border-radius:10px;object-fit:cover;display:block;margin-bottom:8px;box-shadow:0 2px 6px rgba(0,0,0,.12);}
+.book .nm{font-size:14px;font-weight:700;}
+.book .st{font-size:11px;margin-top:3px;color:var(--green);}
+.book.locked .cv{filter:grayscale(1) brightness(.92);}
+.book.locked .st{color:var(--muted);}
+.book .lock{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);color:#fff;font-size:10px;padding:2px 6px;border-radius:8px;}
+/* 底部 tab */
+.tabbar{position:absolute;left:0;right:0;bottom:0;height:74px;background:var(--card);border-top:1px solid var(--line);display:flex;padding:8px 6px;justify-content:space-around;align-items:flex-start;}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:12px;background:none;border:none;padding-top:4px;cursor:pointer;}
+.tab .ic{font-size:24px;}
+.tab.on{color:var(--primary);font-weight:700;}
+/* ===== 伴读播放页 ===== */
+.player-hero{width:100%;height:150px;border-radius:var(--radius);object-fit:cover;display:block;margin-bottom:14px;box-shadow:0 6px 16px rgba(0,0,0,.2);}
+.player-top{text-align:center;margin-bottom:14px;}
+.player-top .bk{font-size:15px;color:var(--muted);}
+.player-top .ep{font-size:21px;font-weight:800;color:var(--ink);margin-top:4px;}
+/* 原文卡 */
+.orig{background:var(--card);border:2px solid var(--primary);border-radius:var(--radius);padding:18px;margin-bottom:14px;position:relative;}
+.orig .lab{position:absolute;top:-12px;left:16px;background:var(--primary);color:#fff;font-size:12px;padding:3px 10px;border-radius:10px;}
+.orig .txt{font-size:25px;line-height:1.7;font-weight:700;color:var(--ink);letter-spacing:1px;}
+.orig .note-chip{display:inline-flex;align-items:center;gap:4px;margin-top:14px;background:var(--gold-soft);color:#9a6a1f;font-size:14px;padding:6px 12px;border-radius:20px;font-weight:700;}
+/* 评书讲解卡 */
+.talk{background:var(--primary-soft);border-radius:var(--radius);padding:18px;margin-bottom:16px;}
+.talk .lab{font-size:13px;color:var(--primary);font-weight:800;margin-bottom:8px;}
+.talk .txt{font-size:19px;line-height:1.85;color:#5a3a2c;}
+/* 工具栏 */
+.tools{display:flex;gap:10px;margin-bottom:16px;}
+.tool{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 6px;text-align:center;font-size:13px;color:var(--ink);}
+.tool .ic{font-size:22px;display:block;margin-bottom:4px;}
+.tool b{font-size:14px;}
+/* 进度 */
+.progress{margin-bottom:8px;}
+.progress .bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;}
+.progress .bar i{display:block;height:100%;width:55%;background:var(--primary);}
+.progress .time{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:6px;}
+/* 主控 */
+.controls{display:flex;align-items:center;justify-content:center;gap:28px;margin:14px 0 18px;}
+.controls .c{width:50px;height:50px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--primary);}
+.controls .main{width:74px;height:74px;background:var(--primary);color:#fff;font-size:30px;border:none;box-shadow:0 8px 18px rgba(0,0,0,.22);}
+/* 会员提示条 */
+.vip-tip{background:var(--gold-soft);border:1px dashed var(--gold);border-radius:14px;padding:14px;text-align:center;font-size:14px;color:#7a5a2a;}
+.vip-tip b{color:var(--gold);}
+/* ===== 会员页 ===== */
+.vip-card{background:linear-gradient(135deg,#3a2a22,#5a3f2e);color:#f3e3c8;border-radius:var(--radius);padding:20px;margin-bottom:16px;}
+.vip-card .t{font-size:15px;opacity:.8;}
+.vip-card .price{font-size:34px;font-weight:800;margin:6px 0;color:#f0c96a;}
+.vip-card .price small{font-size:15px;font-weight:500;}
+.vip-card .perk{font-size:13px;opacity:.85;line-height:1.7;margin-top:8px;}
+.plan{display:flex;gap:12px;margin-bottom:16px;}
+.plan .opt{flex:1;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:14px;text-align:center;}
+.plan .opt.on{border-color:var(--primary);background:var(--primary-soft);}
+.plan .opt b{font-size:20px;color:var(--ink);}
+.plan .opt span{display:block;font-size:12px;color:var(--muted);margin-top:4px;}
+.filial{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:14px;display:flex;align-items:center;gap:14px;}
+.filial .big{font-size:34px;}
+.filial b{font-size:18px;color:var(--ink);}
+.filial p{font-size:13px;color:var(--muted);margin-top:4px;}
+.filial .go{margin-left:auto;background:var(--primary);color:#fff;border:none;border-radius:24px;padding:12px 18px;font-size:15px;font-weight:700;}
+/* ===== 我的页 ===== */
+.row{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:10px;font-size:17px;}
+.row .ic{font-size:24px;color:var(--primary);}
+.row .ar{margin-left:auto;color:var(--muted);font-size:20px;}
+.switch{margin-left:auto;width:54px;height:30px;border-radius:20px;background:var(--primary);position:relative;flex-shrink:0;}
+.switch i{position:absolute;right:3px;top:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s;}
+.switch.off{background:#ccc;}
+.switch.off i{right:27px;}
+.hide{display:none;}
+.hint{text-align:center;font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6;}
+/* 大字清晰模式：放大字体 + 加强对比 */
+body.easy{--ink:#1c120c;}
+body.easy .orig .txt{font-size:30px;}
+body.easy .talk .txt{font-size:23px;}
+body.easy .book .nm{font-size:16px;}
+body.easy .sec-title{font-size:19px;}
+body.easy .screen{font-size:18px;}
+/* ===== 新手引导 ===== */
+.guide{position:absolute;inset:0;background:var(--cream);z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:34px;text-align:center;}
+.guide .skip{position:absolute;top:18px;right:20px;background:none;border:none;color:var(--muted);font-size:14px;}
+.guide .g-img{font-size:88px;margin-bottom:18px;}
+.guide h2{font-size:24px;color:var(--primary);margin-bottom:10px;}
+.guide p{font-size:16px;color:var(--muted);line-height:1.8;max-width:290px;}
+.guide .dots{display:flex;gap:8px;margin:26px 0 18px;}
+.guide .dots i{width:8px;height:8px;border-radius:50%;background:#d8c4b8;display:block;}
+.guide .dots i.on{background:var(--primary);width:22px;border-radius:4px;}
+.guide .btn{background:var(--primary);color:#fff;border:none;border-radius:28px;padding:15px 46px;font-size:18px;font-weight:700;}
+/* ===== 发现页 ===== */
+.cat-tabs{display:flex;gap:10px;overflow-x:auto;margin-bottom:14px;padding-bottom:4px;}
+.cat-tabs .ct{flex-shrink:0;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:8px 16px;font-size:15px;color:var(--ink);white-space:nowrap;}
+.cat-tabs .ct.on{background:var(--primary);color:#fff;border-color:var(--primary);}
+.rank{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;}
+.rank .no{width:28px;text-align:center;font-size:20px;font-weight:800;color:var(--gold);flex-shrink:0;}
+.rank .cv{width:46px;height:62px;border-radius:8px;object-fit:cover;flex-shrink:0;}
+.rank .meta{flex:1;}
+.rank .meta b{font-size:17px;}
+.rank .meta p{font-size:12px;color:var(--muted);margin-top:3px;}
+.rank .play{width:42px;height:42px;border-radius:50%;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+/* ===== 书籍详情 ===== */
+.detail-hero{display:flex;gap:14px;margin-bottom:16px;}
+.detail-hero img{width:104px;height:140px;border-radius:12px;object-fit:cover;box-shadow:0 6px 16px rgba(0,0,0,.2);}
+.detail-hero .info{flex:1;display:flex;flex-direction:column;}
+.detail-hero .info h2{font-size:22px;color:var(--ink);}
+.detail-hero .info .by{font-size:14px;color:var(--muted);margin-top:6px;}
+.detail-hero .info .tags{margin-top:auto;display:flex;gap:6px;flex-wrap:wrap;}
+.detail-hero .info .tags span{background:var(--primary-soft);color:var(--primary);font-size:12px;padding:3px 10px;border-radius:12px;}
+.detail-desc{font-size:15px;line-height:1.8;color:#5a3a2c;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;}
+.detail-try{display:flex;align-items:center;gap:12px;background:var(--gold-soft);border-radius:14px;padding:12px 16px;margin-bottom:16px;}
+.detail-try .ic{font-size:26px;}
+.detail-try b{font-size:16px;color:#7a5a2a;}
+.detail-try p{font-size:12px;color:var(--muted);}
+.detail-try .play{margin-left:auto;width:46px;height:46px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.chapter{display:flex;align-items:center;gap:12px;padding:14px 4px;border-bottom:1px solid var(--line);}
+.chapter .num{width:32px;height:32px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);flex-shrink:0;}
+.chapter .tt{flex:1;font-size:16px;color:var(--ink);}
+.chapter .du{font-size:13px;color:var(--muted);}
+.detail-bar{position:absolute;left:0;right:0;bottom:74px;display:flex;gap:10px;padding:12px 16px;background:var(--card);border-top:1px solid var(--line);z-index:5;}
+.detail-bar button{flex:1;border:none;border-radius:24px;padding:14px;font-size:16px;font-weight:700;}
+.detail-bar .ghost{background:var(--primary-soft);color:var(--primary);}
+.detail-bar .main{background:var(--primary);color:#fff;}
+/* ===== 分享给好友 ===== */
+.steps{display:flex;align-items:center;justify-content:center;gap:8px;margin:6px 0 18px;}
+.steps .s{width:30px;height:30px;border-radius:50%;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;}
+.steps .s.on{background:var(--primary);color:#fff;}
+.steps .ln{width:32px;height:2px;background:var(--line);}
+.gift-book{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:16px;}
+.gift-book img{width:50px;height:66px;border-radius:8px;object-fit:cover;}
+.gift-book .meta b{font-size:16px;}
+.gift-book .meta p{font-size:12px;color:var(--muted);margin-top:3px;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:15px;color:var(--ink);margin-bottom:8px;font-weight:700;}
+.field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:14px;font-size:16px;background:var(--card);color:var(--ink);font-family:inherit;}
+.field textarea{height:84px;resize:none;}
+.gift-submit{position:absolute;left:0;right:0;bottom:74px;padding:12px 16px;background:var(--card);border-top:1px solid var(--line);z-index:5;}
+.gift-submit button{width:100%;background:var(--primary);color:#fff;border:none;border-radius:24px;padding:15px;font-size:17px;font-weight:700;}
+/* ===== 设置 ===== */
+.set-row{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:10px;font-size:17px;}
+.set-row .ic{font-size:24px;color:var(--primary);}
+.set-row .ar{margin-left:auto;color:var(--muted);font-size:20px;}
+.set-row .val{margin-left:auto;color:var(--muted);font-size:15px;}
+/* ===== 弹层 ===== */
+.modal{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:90;display:flex;align-items:flex-end;justify-content:center;}
+.modal.hide{display:none;}
+.sheet{width:100%;background:var(--cream);border-radius:24px 24px 0 0;padding:20px 16px 28px;}
+.sheet h3{font-size:19px;text-align:center;color:var(--ink);margin-bottom:16px;}
+.sheet .opt{display:flex;align-items:center;justify-content:space-between;padding:15px 10px;border-bottom:1px solid var(--line);font-size:17px;color:var(--ink);}
+.sheet .opt .ck{color:var(--primary);font-size:20px;}
+.sheet .cancel{width:100%;margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:14px;font-size:16px;color:var(--ink);}
+/* ===== 祝福语 chips ===== */
+.bless-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.bless-chips .chip{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:9px 14px;font-size:14px;color:var(--ink);}
+.bless-chips .chip.on{background:var(--primary);color:#fff;border-color:var(--primary);font-weight:700;}
+/* ===== 分享卡预览 ===== */
+.share-card{background:linear-gradient(160deg,var(--primary),color-mix(in srgb,var(--primary) 70%,#000));border-radius:16px;padding:18px;text-align:center;color:#fff;margin-bottom:16px;box-shadow:0 8px 20px rgba(0,0,0,.18);}
+.share-card img{width:88px;height:116px;border-radius:10px;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.3);margin-bottom:12px;}
+.share-card .sc-title{font-size:18px;font-weight:800;}
+.share-card .sc-bless{font-size:15px;line-height:1.7;margin-top:8px;opacity:.95;}
+.share-card .sc-from{font-size:12px;opacity:.8;margin-top:8px;}
+.share-btns{display:flex;gap:10px;margin-bottom:6px;}
+.share-btns .sb{flex:1;border:none;border-radius:18px;padding:13px 4px;font-size:14px;font-weight:700;background:var(--primary-soft);color:var(--primary);}
+.share-btns .sb.ghost{background:var(--card);border:1px solid var(--line);color:var(--ink);}
+/* ===== 主题选择 ===== */
+.theme-opt{display:flex;align-items:center;gap:12px;padding:14px 10px;border-bottom:1px solid var(--line);}
+.theme-opt .sw{width:30px;height:30px;border-radius:50%;flex-shrink:0;box-shadow:inset 0 0 0 2px rgba(255,255,255,.6);}
+.theme-opt .tn{flex:1;font-size:16px;color:var(--ink);display:flex;flex-direction:column;}
+.theme-opt .tn small{font-size:12px;color:var(--muted);margin-top:2px;}
+.theme-opt .ck{color:var(--primary);font-size:20px;width:20px;text-align:center;}
+/* ===== 搜索页 ===== */
+.search-top{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.search-top .ib{width:44px;height:44px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--primary);flex-shrink:0;}
+.search-box{flex:1;display:flex;align-items:center;gap:8px;background:var(--card);border:1.5px solid var(--primary);border-radius:24px;padding:11px 16px;}
+.search-box .si{font-size:18px;}
+.search-box input{flex:1;border:none;outline:none;background:none;font-size:17px;color:var(--ink);font-family:inherit;}
+.search-box input::placeholder{color:var(--muted);}
+.search-box .clr{color:var(--muted);font-size:20px;line-height:1;padding:0 2px;}
+.search-top .go-s{background:none;border:none;color:var(--primary);font-size:16px;font-weight:700;white-space:nowrap;flex-shrink:0;}
+.sec-title.sm{margin:20px 2px 12px;}
+.hist-head{display:flex;align-items:center;margin:20px 2px 12px;}
+.hist-head b{font-size:17px;font-weight:800;color:var(--ink);}
+.hist-head .clr-h{margin-left:auto;color:var(--muted);font-size:14px;}
+.hot-chips,.hist-chips{display:flex;flex-wrap:wrap;gap:10px;}
+.hot-chips .hc,.hist-chips .hc{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:9px 16px;font-size:15px;color:var(--ink);cursor:pointer;}
+.hist-chips .hc{background:var(--primary-soft);border-color:var(--primary-soft);color:var(--primary);}
+.results .empty{text-align:center;color:var(--muted);font-size:15px;padding:36px 0;line-height:1.7;}
+.results .rank{cursor:pointer;}
+/* ===== 通用大按钮 ===== */
+.big-btn{width:100%;background:var(--primary);color:#fff;border:none;border-radius:24px;padding:15px;font-size:17px;font-weight:700;}
+/* ===== 登录浮层 ===== */
+.login{position:absolute;inset:0;background:linear-gradient(160deg,var(--primary),color-mix(in srgb,var(--primary) 70%,#000));z-index:85;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;color:#fff;}
+.login .logo{display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:18px;}
+.login .appicon{width:90px;height:90px;border-radius:22px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:46px;box-shadow:0 10px 26px rgba(0,0,0,.28);}
+.login .wordmark{font-size:30px;font-weight:900;letter-spacing:5px;margin-top:8px;color:#fff;}
+.login .submark{font-size:12px;opacity:.82;letter-spacing:3px;margin-top:2px;}
+.login h2{font-size:24px;margin-bottom:10px;}
+.login p{font-size:14px;opacity:.85;line-height:1.7;max-width:260px;margin-bottom:34px;}
+.login .wx{background:#07c160;color:#fff;border:none;border-radius:28px;padding:16px 36px;font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px;cursor:pointer;}
+.login .wx .w{font-size:22px;}
+.login .later{margin-top:22px;background:none;border:none;color:rgba(255,255,255,.85);font-size:14px;text-decoration:underline;cursor:pointer;}
+/* ===== 激励视频解锁 ===== */
+.ad-box{height:200px;border-radius:16px;background:linear-gradient(135deg,#3a2a22,#5a3f2e);color:#f3e3c8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;margin-bottom:18px;position:relative;overflow:hidden;}
+.ad-box .ad-tag{position:absolute;top:10px;left:12px;background:rgba(255,255,255,.22);font-size:11px;padding:2px 8px;border-radius:8px;}
+.ad-box .ad-cnt{position:absolute;top:10px;right:12px;background:rgba(0,0,0,.4);font-size:12px;padding:2px 8px;border-radius:8px;}
+.ad-box .ad-emoji{font-size:54px;}
+.ad-box .ad-name{font-size:16px;opacity:.9;}
+.ad-box .ad-skip{position:absolute;bottom:10px;right:12px;background:rgba(0,0,0,.5);color:#fff;font-size:12px;padding:4px 12px;border-radius:16px;border:none;cursor:pointer;}
+.unlock-info{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;font-size:15px;line-height:1.7;color:var(--ink);margin-bottom:16px;}
+.unlock-info b{color:var(--primary);}
+.unlock-done{text-align:center;color:var(--green);font-size:18px;font-weight:800;margin:6px 0 10px;}
+/* ===== 订单 / 支付 / 成功 ===== */
+.order-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;}
+.order-card .ot{font-size:15px;color:var(--muted);}
+.order-card .on{font-size:20px;font-weight:800;color:var(--ink);margin:6px 0;}
+.order-card .op{font-size:26px;font-weight:800;color:var(--primary);}
+.order-row{display:flex;justify-content:space-between;padding:12px 4px;border-bottom:1px solid var(--line);font-size:15px;}
+.order-row:last-child{border-bottom:none;}
+.pay-box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;text-align:center;margin-bottom:16px;}
+.pay-box .amt{font-size:40px;font-weight:800;color:var(--ink);margin:10px 0;}
+.pay-box .amt small{font-size:18px;}
+.pay-box .recv{font-size:14px;color:var(--muted);}
+.wx-pay-btn{width:100%;background:#07c160;color:#fff;border:none;border-radius:24px;padding:16px;font-size:18px;font-weight:700;margin-top:8px;cursor:pointer;}
+.paysucc{text-align:center;padding:24px 0;}
+.paysucc .ring{width:84px;height:84px;border-radius:50%;background:var(--green);color:#fff;font-size:44px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
+.paysucc h3{font-size:22px;color:var(--ink);}
+.paysucc p{font-size:14px;color:var(--muted);margin-top:8px;}
+/* ===== 离线下载 ===== */
+.dl-head{display:flex;align-items:center;gap:12px;background:var(--primary-soft);border-radius:14px;padding:14px;margin-bottom:14px;font-size:15px;color:var(--primary);font-weight:700;}
+.dl-item{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;}
+.dl-item .nm{flex:1;font-size:16px;color:var(--ink);}
+.dl-item .sz{font-size:13px;color:var(--muted);}
+.dl-item .del{color:#c0392b;font-size:20px;background:none;border:none;cursor:pointer;}
+.dl-empty{text-align:center;color:var(--muted);font-size:15px;padding:40px 0;line-height:1.7;}
+.book .dl{position:absolute;top:8px;left:8px;background:rgba(90,138,63,.92);color:#fff;font-size:10px;padding:2px 6px;border-radius:8px;}
+/* ===== 书豆积分 + 任务中心 ===== */
+.bean-card{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--gold),color-mix(in srgb,var(--gold) 68%,#000));border-radius:var(--radius);padding:16px;margin-bottom:14px;color:#fff;box-shadow:0 6px 16px rgba(0,0,0,.12);cursor:pointer;}
+.bean-card .ic{font-size:34px;}
+.bean-card .meta b{font-size:24px;}
+.bean-card .meta p{font-size:12px;opacity:.92;margin-top:2px;}
+.bean-card .go{margin-left:auto;background:rgba(255,255,255,.24);border:none;color:#fff;border-radius:22px;padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.task-item{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;}
+.task-item .ti{font-size:26px;flex-shrink:0;}
+.task-item .body{flex:1;}
+.task-item .body b{font-size:16px;color:var(--ink);}
+.task-item .body p{font-size:12px;color:var(--muted);margin-top:3px;}
+.task-item .prog{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:6px;}
+.task-item .prog i{display:block;height:100%;background:var(--primary);transition:.3s;}
+.task-item .claim{background:var(--primary);color:#fff;border:none;border-radius:20px;padding:10px 14px;font-size:14px;font-weight:700;white-space:nowrap;cursor:pointer;}
+.task-item .claim.done{background:#cdb9a7;cursor:default;}
+.pts-row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;}
+.pts-row .ic{font-size:24px;color:var(--gold);flex-shrink:0;}
+.pts-row .meta{flex:1;}
+.pts-row .meta b{font-size:16px;color:var(--ink);}
+.pts-row .meta p{font-size:12px;color:var(--muted);margin-top:3px;}
+.pts-row .val{font-weight:800;color:var(--primary);font-size:16px;flex-shrink:0;}
+.pts-row .ex{background:var(--primary);color:#fff;border:none;border-radius:20px;padding:10px 14px;font-size:14px;font-weight:700;white-space:nowrap;cursor:pointer;flex-shrink:0;}
+.pts-row .ex.gone{background:#cdb9a7;cursor:not-allowed;}
+.unlock-split{margin:14px 0 4px;}
+.unlock-split .us-tip{text-align:center;font-size:14px;color:var(--muted);margin-bottom:12px;line-height:1.6;}
+.unlock-split .us-tip b{color:var(--primary);}
+.us-btns{display:flex;gap:12px;}
+.us-btn{flex:1;border:none;border-radius:24px;padding:15px;font-size:16px;font-weight:700;cursor:pointer;}
+.us-btn.ad{background:var(--primary);color:#fff;}
+.us-btn.bean{background:var(--gold);color:#fff;}
+.us-btn.bean.gone{background:#cdb9a7;cursor:not-allowed;}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><span class="dots"><i></i><i></i><i></i></span><span>5G ▱100%</span></div>
+
+  <!-- ============ 书架首页 ============ -->
+  <div class="screen" id="scr-home">
+    <div class="topbar"><div class="brand">典声<small>名著评书伴读</small></div><div class="icon-btn">☰</div></div>
+    <div class="search">🔍 搜索书名 / 说书人</div>
+    <div class="banner">
+      <h3>西游记 · 前10回免费听</h3>
+      <p>一句原文，一句评书讲解，名著听得懂、更听得进。</p>
+      <span class="tag">🔥 听书榜单 TOP1</span>
+    </div>
+    <div class="resume">
+      <img class="cover" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png" alt="西游记封面">
+      <div class="meta"><b>西游记</b><p>继续听 · 第8回（68%）</p></div>
+      <div class="play">▶</div>
+    </div>
+    <div class="sec-title">名著书架</div>
+    <div class="grid">
+      <div class="book"><img class="cv" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png" alt="西游记封面"><span class="dl">⬇已下</span><div class="nm">西游记</div><div class="st">可听·100回</div></div>
+      <div class="book locked"><img class="cv" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png" alt="三国演义封面"><span class="lock">🔒</span><div class="nm">三国演义</div><div class="st">即将上线</div></div>
+      <div class="book locked"><img class="cv" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png" alt="水浒传封面"><span class="lock">🔒</span><div class="nm">水浒传</div><div class="st">即将上线</div></div>
+      <div class="book locked"><img class="cv" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png" alt="红楼梦封面"><span class="lock">🔒</span><div class="nm">红楼梦</div><div class="st">即将上线</div></div>
+      <div class="book locked"><img class="cv" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png" alt="封神演义封面"><span class="lock">🔒</span><div class="nm">封神演义</div><div class="st">敬请期待</div></div>
+      <div class="book locked"><img class="cv" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png" alt="聊斋封面"><span class="lock">🔒</span><div class="nm">聊斋</div><div class="st">敬请期待</div></div>
+    </div>
+  </div>
+
+  <!-- ============ 伴读播放页（核心） ============ -->
+  <div class="screen hide" id="scr-play">
+    <div class="topbar"><div class="icon-btn">‹</div><div class="brand" style="font-size:18px">伴读</div><div class="icon-btn">⋮</div></div>
+    <img class="player-hero" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png" alt="西游记封面">
+    <div class="player-top"><div class="bk">西游记</div><div class="ep">第8回 · 我佛造经传极乐</div></div>
+
+    <div class="orig">
+      <span class="lab">原文</span>
+      <div class="txt">众猴听说，即拱伏无违，一个个序齿排班，朝上礼拜。</div>
+      <span class="note-chip">📖 难词：拱伏无违 = 服服帖帖</span>
+    </div>
+
+    <div class="talk">
+      <div class="lab">🎙 评书讲解</div>
+      <div class="txt">各位看官，这帮猴子为啥一下子就服了？原来悟空跳进瀑布，给大家寻来个安身的水帘洞洞天。有功之臣，自然要当大王！所以众猴拱伏无违——说白了，就是服服帖帖、排队作揖，认他做美猴王了。</div>
+    </div>
+
+    <div class="tools">
+      <div class="tool"><span class="ic">⏩</span>倍速<br><b>1.0x</b></div>
+      <div class="tool" onclick="openModal('sleepModal')"><span class="ic">⏰</span>定时<br><b>关</b></div>
+      <div class="tool" onclick="go('downloads','me')"><span class="ic">⬇</span>离线<br><b>未下</b></div>
+      <div class="tool"><span class="ic">🎭</span>音色<br><b>旁白</b></div>
+    </div>
+
+    <div class="progress">
+      <div class="bar"><i></i></div>
+      <div class="time"><span>03:12</span><span>05:40</span></div>
+    </div>
+    <div class="controls">
+      <div class="c">⏮</div>
+      <div class="c main">▶</div>
+      <div class="c">⏭</div>
+    </div>
+    <div class="vip-tip">前 10 回免费畅听 · 后续 <b>会员畅听全货架</b>，免费看广告或书豆也能解锁</div>
+  </div>
+
+  <!-- ============ 会员 ============ -->
+  <div class="screen hide" id="scr-vip">
+    <div class="topbar"><div class="brand" style="font-size:20px">会员中心</div><div class="icon-btn">✕</div></div>
+    <div class="vip-card" style="cursor:pointer" onclick="openOrder('member')">
+      <div class="t">典声 · 畅听会员</div>
+      <div class="price">¥168 <small>/ 年（约 0.46 元/天）</small></div>
+      <div class="perk">✓ 全货架名著无限听　✓ 角色音色（悟空/唐僧）<br>✓ 离线下载　✓ 无广告打扰</div>
+    </div>
+    <div class="plan">
+      <div class="opt" onclick="selectPlan(this);openOrder('member')"><b>¥18</b><span>月卡</span></div>
+      <div class="opt on" onclick="selectPlan(this);openOrder('member')"><b>¥168</b><span>年卡 · 推荐</span></div>
+    </div>
+    <div class="filial">
+      <div class="big">💝</div>
+      <div><b>分享给好友，一起听经典</b><p>生成专属分享卡，微信转发朋友即听</p></div>
+      <button class="go" onclick="go('gift','vip')">去分享</button>
+    </div>
+  </div>
+
+  <!-- ============ 我的 ============ -->
+  <div class="screen hide" id="scr-me">
+    <div class="topbar"><div class="brand" style="font-size:20px">我的</div><div class="icon-btn">⚙</div></div>
+    <div class="bean-card" onclick="go('points','me')">
+      <div class="ic">🫘</div>
+      <div class="meta"><b><span id="beanNum">0</span> 书豆</b><p>听书赚书豆，兑换解锁章节 / 畅听券</p></div>
+      <button class="go">明细 ›</button>
+    </div>
+    <div class="row"><span class="ic">👤</span><span id="acctName">微信用户（已登录）</span><span class="ar">›</span></div>
+    <div class="row" onclick="go('tasks','me')"><span class="ic">🎯</span>任务中心<span class="ar">›</span></div>
+    <div class="row" onclick="go('downloads','me')"><span class="ic">📥</span>离线下载<span class="ar">›</span></div>
+    <div class="row"><span class="ic">🎤</span>语音导航<span class="ar">›</span></div>
+    <div class="row"><span class="ic">🆘</span>一键求助（客服）<span class="ar">›</span></div>
+    <div class="row" onclick="go('detail','me')"><span class="ic">📚</span>我的书架与续听<span class="ar">›</span></div>
+    <div class="row"><span class="ic">📜</span>用户协议 / AI 标识告知<span class="ar">›</span></div>
+    <div class="row" onclick="go('settings','me')"><span class="ic">⚙</span>设置<span class="ar">›</span></div>
+  </div>
+
+  <!-- ============ 新手引导 (首启动) ============ -->
+  <div class="guide" id="guide">
+    <button class="skip" onclick="closeGuide()">跳过 ›</button>
+    <div class="g-img" id="gImg">📚</div>
+    <h2 id="gTitle">欢迎使用典声</h2>
+    <p id="gText">名著原著，一句原文一句评书讲解，听着比读着更有味。</p>
+    <div class="dots" id="gDots"><i class="on"></i><i></i><i></i></div>
+    <button class="btn" id="gBtn" onclick="nextGuide()">下一步</button>
+  </div>
+
+  <!-- ============ 发现 / 榜单 ============ -->
+  <div class="screen hide" id="scr-discover">
+    <div class="topbar"><div class="icon-btn" onclick="go('home','home')">‹</div><div class="brand" style="font-size:20px">发现</div><div class="icon-btn" onclick="go('search','home')">🔍</div></div>
+    <div class="cat-tabs">
+      <div class="ct on">推荐</div><div class="ct">经典名著</div><div class="ct">历史演义</div><div class="ct">神怪神话</div><div class="ct">世情小说</div><div class="ct">免费专区</div>
+    </div>
+    <div class="sec-title">🔥 听书榜单</div>
+    <div class="rank"><div class="no">1</div><img class="cv" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png"><div class="meta"><b>西游记</b><p>评书伴读 · 更新至100回</p></div><div class="play">▶</div></div>
+    <div class="rank"><div class="no">2</div><img class="cv" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png"><div class="meta"><b>三国演义</b><p>即将上线 · 敬请期待</p></div><div class="play">▶</div></div>
+    <div class="rank"><div class="no">3</div><img class="cv" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png"><div class="meta"><b>水浒传</b><p>即将上线 · 敬请期待</p></div><div class="play">▶</div></div>
+    <div class="sec-title">💡 为你推荐</div>
+    <div class="rank"><div class="no">★</div><img class="cv" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png"><div class="meta"><b>封神演义</b><p>神怪神话 · 敬请期待</p></div><div class="play">▶</div></div>
+    <div class="rank"><div class="no">★</div><img class="cv" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png"><div class="meta"><b>聊斋</b><p>世情神怪 · 敬请期待</p></div><div class="play">▶</div></div>
+  </div>
+
+  <!-- ============ 搜索 ============ -->
+  <div class="screen hide" id="scr-search">
+    <div class="search-top">
+      <div class="ib" onclick="go('home','home')">‹</div>
+      <div class="search-box">
+        <span class="si">🔍</span>
+        <input id="searchInput" type="text" placeholder="搜索书名 / 说书人" oninput="onSearchInput()" onkeydown="if(event.key==='Enter')doSearch()">
+        <span class="clr" id="searchClr" style="display:none" onclick="clearInput()">✕</span>
+      </div>
+      <button class="go-s" onclick="doSearch()">搜索</button>
+    </div>
+
+    <div id="searchSug">
+      <div class="hist-head"><b>搜索历史</b><span class="clr-h" onclick="clearHistory()">清空</span></div>
+      <div class="hist-chips" id="histChips"></div>
+      <div class="sec-title sm">🔥 热门搜索</div>
+      <div class="hot-chips" id="hotChips"></div>
+    </div>
+
+    <div class="results" id="searchResults"></div>
+  </div>
+
+  <!-- ============ 书籍详情 ============ -->
+  <div class="screen hide" id="scr-detail">
+    <div class="topbar"><div class="icon-btn" onclick="go('home','home')">‹</div><div class="brand" style="font-size:20px">书籍详情</div><div class="icon-btn">⋮</div></div>
+    <div class="vip-tip" style="margin-bottom:14px">前 10 回免费 · 后续回目 <b>看广告或书豆免费解锁</b>，无需开通会员</div>
+    <div class="detail-hero">
+      <img src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png">
+      <div class="info">
+        <h2>西游记</h2>
+        <div class="by">评书人：醒木先生 · 共100回</div>
+        <div class="tags"><span>经典名著</span><span>评书伴读</span><span>免费前10回</span></div>
+      </div>
+    </div>
+    <div class="detail-desc">一部家喻户晓的神魔小说。石猴出世、大闹天宫、西天取经……一句原文配一句评书讲解，把名著讲得明明白白、更有滋味。</div>
+    <div class="detail-try"><div class="ic">🎧</div><div><b>试听 · 第1回</b><p>灵根育孕源流出</p></div><div class="play">▶</div></div>
+    <div class="row" style="cursor:pointer;margin-bottom:12px" onclick="alert('Demo：已加入下载队列，将在 WiFi 下缓存')"><span class="ic">⬇</span>下载整本（前10回）<span class="ar">›</span></div>
+    <div class="sec-title">章节目录</div>
+    <div class="chapter" onclick="go('play','play')" style="cursor:pointer"><div class="num">1</div><div class="tt">灵根育孕源流出　心性修持大道生</div><div class="du">12:30</div></div>
+    <div class="chapter" onclick="go('play','play')" style="cursor:pointer"><div class="num">2</div><div class="tt">悟彻菩提真妙理　断魔归本合元神</div><div class="du">11:05</div></div>
+    <div class="chapter" onclick="go('play','play')" style="cursor:pointer"><div class="num">3</div><div class="tt">四海千山皆拱伏　九幽十类尽除名</div><div class="du">13:20</div></div>
+    <div class="chapter" onclick="go('play','play')" style="cursor:pointer"><div class="num">4</div><div class="tt">官封弼马心何足　名注齐天意未宁</div><div class="du">10:48</div></div>
+    <div class="chapter" onclick="openUnlock()" style="cursor:pointer"><div class="num">🔒</div><div class="tt">第11回起 · 看广告免费解锁</div><div class="du">🔓</div></div>
+    <div class="detail-bar">
+      <button class="ghost" onclick="go('home','home')">加入书架</button>
+      <button class="main" onclick="go('play','play')">开始伴读</button>
+    </div>
+  </div>
+
+  <!-- ============ 分享给好友 ============ -->
+  <div class="screen hide" id="scr-gift">
+    <div class="topbar"><div class="icon-btn" onclick="go('vip','vip')">‹</div><div class="brand" style="font-size:20px">分享给好友</div><div class="icon-btn">✕</div></div>
+    <div class="steps"><div class="s on">1</div><div class="ln"></div><div class="s">2</div><div class="ln"></div><div class="s">3</div></div>
+    <div class="gift-book"><img src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png"><div class="meta"><b>我在听 · 西游记</b><p>经典名著评书伴读 · 推荐给你</p></div></div>
+    <div class="field"><label>选一句分享语</label>
+      <div class="bless-chips">
+        <span class="chip on" onclick="pickBless(this)">这部《西游记》评书真不错，推荐给你</span>
+        <span class="chip" onclick="pickBless(this)">闲着就听听书，解闷又长见识</span>
+        <span class="chip" onclick="pickBless(this)">一句原文一句讲解，名著听得进</span>
+      </div>
+    </div>
+    <div class="field"><label>想对 TA 说的一句话</label><textarea placeholder="闲着就听听书，解闷又长见识～">闲着就听听书，解闷又长见识～</textarea></div>
+    <div class="gift-submit"><button onclick="openModal('giftDone')">生成分享卡 ›</button></div>
+  </div>
+
+  <!-- ============ 设置 ============ -->
+  <div class="screen hide" id="scr-settings">
+    <div class="topbar"><div class="icon-btn" onclick="go('me','me')">‹</div><div class="brand" style="font-size:20px">设置</div><div class="icon-btn">✕</div></div>
+    <div class="set-row"><span class="ic">🔠</span>大字清晰模式（超大字·高对比）<div class="switch" id="easySwitch" onclick="toggleEasy()"><i></i></div></div>
+    <div class="set-row"><span class="ic">⏩</span>播放语速<span class="val">1.0x</span><span class="ar">›</span></div>
+    <div class="set-row"><span class="ic">🎭</span>默认音色<span class="val">旁白</span><span class="ar">›</span></div>
+    <div class="set-row"><span class="ic">🎤</span>语音导航<div class="switch" id="voiceSwitch" onclick="toggleVoice()"><i></i></div></div>
+    <div class="set-row"><span class="ic">📶</span>网络检测<span class="ar">›</span></div>
+    <div class="set-row" onclick="openModal('themeModal')"><span class="ic">🎨</span>主题配色<span class="val" id="themeVal">暖橙</span><span class="ar">›</span></div>
+    <div class="set-row"><span class="ic">📜</span>关于典声 / AI 标识<span class="ar">›</span></div>
+    <div class="set-row" onclick="replayGuide()"><span class="ic">🔄</span>重新看新手引导<span class="ar">›</span></div>
+    <div class="set-row" style="color:var(--primary);justify-content:center;font-weight:700;cursor:pointer;" onclick="logout()">退出登录</div>
+  </div>
+
+  <!-- ============ 离线下载管理 ============ -->
+  <div class="screen hide" id="scr-downloads">
+    <div class="topbar"><div class="icon-btn" onclick="go('me','me')">‹</div><div class="brand" style="font-size:20px">离线下载</div><div class="icon-btn">🗑</div></div>
+    <div class="dl-head">📥 已下载 3 回 · 共 58.2 MB（仅 WiFi 下缓存）</div>
+    <div class="dl-item"><div class="nm">西游记 · 第1回 灵根育孕源流出</div><div class="sz">19.4MB</div><button class="del" onclick="this.parentNode.remove()">🗑</button></div>
+    <div class="dl-item"><div class="nm">西游记 · 第2回 悟彻菩提真妙理</div><div class="sz">17.1MB</div><button class="del" onclick="this.parentNode.remove()">🗑</button></div>
+    <div class="dl-item"><div class="nm">西游记 · 第3回 四海千山皆拱伏</div><div class="sz">21.7MB</div><button class="del" onclick="this.parentNode.remove()">🗑</button></div>
+  </div>
+
+  <!-- ============ 任务中心 ============ -->
+  <div class="screen hide" id="scr-tasks">
+    <div class="topbar"><div class="icon-btn" onclick="go('me','me')">‹</div><div class="brand" style="font-size:20px">任务中心</div><div class="icon-btn" onclick="go('points','me')">🫘</div></div>
+    <div class="bean-card" onclick="go('points','me')" style="margin-top:6px">
+      <div class="ic">🫘</div>
+      <div class="meta"><b><span id="beanNum2">0</span> 书豆</b><p>做任务赚书豆，兑换听书权益</p></div>
+      <button class="go">去兑换 ›</button>
+    </div>
+    <div class="sec-title">每日任务</div>
+    <div class="task-item" id="task-sign">
+      <div class="ti">📅</div>
+      <div class="body"><b>每日签到</b><p>每天领书豆，连续签到更高</p><div class="prog"><i style="width:0%"></i></div></div>
+      <button class="claim" onclick="claimTask('sign')">签到 +10</button>
+    </div>
+    <div class="task-item" id="task-listen">
+      <div class="ti">🎧</div>
+      <div class="body"><b>听完推荐一整回</b><p>今日进度 0/1 回</p><div class="prog"><i style="width:0%"></i></div></div>
+      <button class="claim" onclick="claimTask('listen')">领取 +5</button>
+    </div>
+    <div class="task-item" id="task-share">
+      <div class="ti">💬</div>
+      <div class="body"><b>分享给好友</b><p>把好书分享给 1 位好友</p><div class="prog"><i style="width:0%"></i></div></div>
+      <button class="claim" onclick="claimTask('share')">领取 +8</button>
+    </div>
+    <div class="sec-title">成长任务</div>
+    <div class="task-item" id="task-book">
+      <div class="ti">📚</div>
+      <div class="body"><b>听完一整本书</b><p>累计听完 100 回 · 永久成就</p><div class="prog"><i style="width:10%"></i></div></div>
+      <button class="claim" onclick="claimTask('book')">领取 +50</button>
+    </div>
+    <div class="task-item" id="task-streak">
+      <div class="ti">🔥</div>
+      <div class="body"><b>连续听书 7 天</b><p>已连续 0 天</p><div class="prog"><i style="width:0%"></i></div></div>
+      <button class="claim" onclick="claimTask('streak')">领取 +30</button>
+    </div>
+    <p class="hint">书豆仅用于兑换听书权益（解锁章节 / 畅听券 / 角色音色），不可提现</p>
+  </div>
+
+  <!-- ============ 书豆明细 / 兑换 ============ -->
+  <div class="screen hide" id="scr-points">
+    <div class="topbar"><div class="icon-btn" onclick="go('me','me')">‹</div><div class="brand" style="font-size:20px">书豆明细</div><div class="icon-btn">✕</div></div>
+    <div class="bean-card" style="margin-top:6px;cursor:default">
+      <div class="ic">🫘</div>
+      <div class="meta"><b><span id="beanNum3">0</span> 书豆</b><p>当前余额 · 虚拟积分，不可提现</p></div>
+    </div>
+    <div class="sec-title">兑换听书权益</div>
+    <div class="pts-row"><div class="ic">🔓</div><div class="meta"><b>解锁 1 组章节</b><p>解锁《西游记》第 11–20 回</p></div><span class="val">50</span><button class="ex" onclick="exchange('chapter',50)">兑换</button></div>
+    <div class="pts-row"><div class="ic">🎫</div><div class="meta"><b>畅听券 · 24h</b><p>24 小时内全货架不限听</p></div><span class="val">100</span><button class="ex" onclick="exchange('pass',100)">兑换</button></div>
+    <div class="pts-row"><div class="ic">🎭</div><div class="meta"><b>角色音色 · 悟空</b><p>虚拟增值权益（P2）</p></div><span class="val">200</span><button class="ex" onclick="exchange('voice',200)">兑换</button></div>
+    <div class="sec-title">获取记录</div>
+    <div id="beanLog"></div>
+    <p class="hint">书豆不可提现，仅兑换听书相关虚拟权益</p>
+  </div>
+
+  <!-- ============ 激励视频解锁（双通道） ============ -->
+  <div class="screen hide" id="scr-unlock">
+    <div class="topbar"><div class="icon-btn" onclick="go('detail','home')">‹</div><div class="brand" style="font-size:18px">解锁后续</div><div class="icon-btn">✕</div></div>
+    <div class="ad-box" id="adBox">
+      <span class="ad-tag">广告</span>
+      <span class="ad-cnt" id="adCnt">15s</span>
+      <div class="ad-emoji">📣</div>
+      <div class="ad-name">—— 激励视频广告 ——</div>
+      <button class="ad-skip" id="adSkip" style="display:none" onclick="finishAd()">跳过 ✕</button>
+    </div>
+    <div class="unlock-info" id="unlockInfo"><b>看广告，免费解锁</b><br>观看完整激励视频，即可免费解锁《西游记》第 11–20 回，无需开通会员。</div>
+    <button class="big-btn" id="unlockGo" style="display:none" onclick="go('play','play')">✓ 解锁成功，去听第11回</button>
+    <div class="unlock-split" id="unlockSplit">
+      <div class="us-tip">或消耗 <b id="unlockCost">50</b> 书豆立即解锁（当前 <span id="unlockBean">0</span> 书豆）</div>
+      <div class="us-btns">
+        <button class="us-btn ad" onclick="startAd()">▶ 看广告解锁</button>
+        <button class="us-btn bean" id="beanUnlockBtn" onclick="useBeansUnlock()">🫘 书豆解锁</button>
+      </div>
+    </div>
+    <p class="hint">合规提示：内容可通过看广告或积分免费解锁，积分仅用于兑换听书权益，不可提现</p>
+  </div>
+
+  <!-- ============ 确认订单 ============ -->
+  <div class="screen hide" id="scr-order">
+    <div class="topbar"><div class="icon-btn" onclick="go('vip','vip')">‹</div><div class="brand" style="font-size:20px">确认订单</div><div class="icon-btn">✕</div></div>
+    <div class="order-card">
+      <div class="ot" id="ordType">典声 · 畅听会员</div>
+      <div class="on" id="ordName">年卡</div>
+      <div class="op" id="ordPrice">¥168</div>
+    </div>
+    <div class="order-card">
+      <div class="order-row"><span>订阅周期</span><span id="ordCycle">365 天</span></div>
+      <div class="order-row"><span>权益</span><span>全货架名著无限听</span></div>
+      <div class="order-row"><span>支付方式</span><span>微信支付</span></div>
+    </div>
+    <button class="big-btn" id="orderPayBtn" onclick="go('pay','vip')">微信支付 ¥168</button>
+  </div>
+
+  <!-- ============ 微信支付 ============ -->
+  <div class="screen hide" id="scr-pay">
+    <div class="topbar"><div class="icon-btn" onclick="go('order','vip')">‹</div><div class="brand" style="font-size:20px">微信支付</div><div class="icon-btn">✕</div></div>
+    <div class="pay-box">
+      <div class="recv">典声</div>
+      <div class="amt" id="payAmt">¥168<small>.00</small></div>
+      <div class="recv">向 典声 支付</div>
+      <button class="wx-pay-btn" onclick="go('paysuccess','vip')">立即支付</button>
+    </div>
+  </div>
+
+  <!-- ============ 支付成功 ============ -->
+  <div class="screen hide" id="scr-paysuccess">
+    <div class="topbar"><div class="icon-btn" onclick="go('vip','vip')">‹</div><div class="brand" style="font-size:20px">支付结果</div><div class="icon-btn">✕</div></div>
+    <div class="paysucc">
+      <div class="ring">✓</div>
+      <h3 id="succTitle">支付成功</h3>
+      <p id="succDesc">会员已开通，畅听全货架名著</p>
+      <button class="big-btn" id="succBtn" style="margin-top:24px" onclick="afterPay()">完成</button>
+    </div>
+  </div>
+
+  <!-- ============ 弹层 ============ -->
+  <div class="modal hide" id="sleepModal" onclick="if(event.target===this)closeModal('sleepModal')">
+    <div class="sheet">
+      <h3>定时关闭</h3>
+      <div class="opt" onclick="setTimer('15 分钟')">15 分钟<span class="ck">✓</span></div>
+      <div class="opt" onclick="setTimer('30 分钟')">30 分钟</div>
+      <div class="opt" onclick="setTimer('60 分钟')">60 分钟</div>
+      <div class="opt" onclick="setTimer('播完本章')">播完本章</div>
+      <div class="opt" onclick="setTimer('不开启')">不开启</div>
+      <button class="cancel" onclick="closeModal('sleepModal')">取消</button>
+    </div>
+  </div>
+  <div class="modal hide" id="soonModal" onclick="if(event.target===this)closeModal('soonModal')">
+    <div class="sheet">
+      <h3>即将上线</h3>
+      <div class="opt" style="justify-content:center;color:var(--muted)">该书正在筹备评书录制，先听听《西游记》吧～</div>
+      <button class="cancel" onclick="closeModal('soonModal')">知道了</button>
+    </div>
+  </div>
+  <div class="modal hide" id="giftDone" onclick="if(event.target===this)closeModal('giftDone')">
+    <div class="sheet">
+      <h3>🎉 分享卡已生成</h3>
+      <div class="share-card">
+        <img src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png">
+        <div class="sc-title">西游记 · 畅听年卡</div>
+        <div class="sc-bless">闲着就听听书，解闷又长见识～</div>
+        <div class="sc-from">—— 来自：微信用户</div>
+      </div>
+      <div class="share-btns">
+        <button class="sb" onclick="closeModal('giftDone')">💬 微信好友</button>
+        <button class="sb" onclick="closeModal('giftDone')">🌈 朋友圈</button>
+        <button class="sb ghost" onclick="closeModal('giftDone')">🖼 保存图片</button>
+      </div>
+      <button class="cancel" onclick="closeModal('giftDone');go('vip','vip')">完成</button>
+    </div>
+  </div>
+
+  <!-- ============ 主题配色选择 ============ -->
+  <div class="modal hide" id="themeModal" onclick="if(event.target===this)closeModal('themeModal')">
+    <div class="sheet">
+      <h3>选择主题配色</h3>
+      <div class="theme-opt" onclick="setTheme('warm')"><span class="sw" style="background:#e8823a"></span><span class="tn">暖橙·明亮活力<small>高可见度，护眼耐看（推荐）</small></span><span class="ck" id="ck-warm">✓</span></div>
+      <div class="theme-opt" onclick="setTheme('vermilion')"><span class="sw" style="background:#c8453b"></span><span class="tn">朱漆红·经典国风<small>传统喜庆，评书味浓</small></span><span class="ck" id="ck-vermilion"></span></div>
+      <div class="theme-opt" onclick="setTheme('green')"><span class="sw" style="background:#2f6b5e"></span><span class="tn">墨绿·沉静听书<small>护眼安静，适合长听</small></span><span class="ck" id="ck-green"></span></div>
+      <button class="cancel" onclick="closeModal('themeModal')">取消</button>
+    </div>
+  </div>
+
+  <!-- ============ 登录浮层 ============ -->
+  <div class="login" id="login" style="display:none">
+    <div class="logo">
+      <div class="appicon">📚</div>
+      <div class="wordmark">典声</div>
+      <div class="submark">名著评书伴读</div>
+    </div>
+    <h2>欢迎来到典声</h2>
+    <p>一句原文一句评书讲解，陪你把名著听得明明白白。微信登录后即可听书、购买会员与分享好书。</p>
+    <button class="wx" onclick="doLogin()"><span class="w">💬</span> 微信一键登录</button>
+    <button class="later" onclick="closeLogin()">稍后再说</button>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="tabbar">
+    <button class="tab on" data-t="home" onclick="go('home','home')"><span class="ic">📚</span>书架</button>
+    <button class="tab" data-t="play" onclick="go('play','play')"><span class="ic">🎧</span>伴读</button>
+    <button class="tab" data-t="vip" onclick="go('vip','vip')"><span class="ic">💎</span>会员</button>
+    <button class="tab" data-t="me" onclick="go('me','me')"><span class="ic">👤</span>我的</button>
+  </div>
+</div>
+
+<script>
+var SCREENS=['home','play','vip','me','discover','detail','gift','settings','search','unlock','order','pay','paysuccess','downloads','tasks','points'];
+function show(id){
+  SCREENS.forEach(function(k){var el=document.getElementById('scr-'+k);if(el)el.classList.toggle('hide',k!==id);});
+  var sc=document.getElementById('scr-'+id);if(sc)sc.scrollTop=0;
+}
+function go(s,tab){
+  if(document.getElementById('guide')&&document.getElementById('guide').style.display!=='none')return;
+  show(s);
+  if(tab){document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});var bt=document.querySelector('.tab[data-t="'+tab+'"]');if(bt)bt.classList.add('on');}
+  if(s==='tasks')renderTasks();
+  if(s==='points')renderPoints();
+  if(s==='unlock')renderUnlock();
+}
+function openModal(id){var m=document.getElementById(id);if(m)m.classList.remove('hide');}
+function closeModal(id){var m=document.getElementById(id);if(m)m.classList.add('hide');}
+var EASY_KEY='ttbd_easy';
+function toggleEasy(){var on=document.body.classList.toggle('easy');var sw=document.getElementById('easySwitch');if(sw)sw.classList.toggle('off',!on);try{localStorage.setItem(EASY_KEY,on?'1':'0');}catch(e){}}
+function toggleVoice(){var sw=document.getElementById('voiceSwitch');if(sw)sw.classList.toggle('off');}
+function setTimer(t){closeModal('sleepModal');var lab=document.querySelector('.tool:nth-child(2) b');if(lab)lab.textContent=(t==='不开启'?'关':t);}
+
+/* 新手引导：仅首次启动展示，之后用 localStorage 记住 */
+var GUIDE_KEY='ttbd_guide_shown';
+var guideStep=0;
+var guideData=[
+ {img:'📚',t:'欢迎使用典声',x:'名著原著，一句原文一句评书讲解，听着比读着更有味。'},
+ {img:'🎧',t:'大字伴读，听着不累',x:'原文超大字+难词注解，眼睛花也能看；想纯听就切纯听模式。'},
+ {img:'💝',t:'好书，分享给朋友',x:'生成专属分享卡，微信转发给朋友，邀 ta 一起听经典。'}
+];
+function renderGuide(){var d=guideData[guideStep];document.getElementById('gImg').textContent=d.img;document.getElementById('gTitle').textContent=d.t;document.getElementById('gText').textContent=d.x;var ds=document.getElementById('gDots').children;for(var i=0;i<ds.length;i++)ds[i].className=i===guideStep?'on':'';document.getElementById('gBtn').textContent=guideStep===guideData.length-1?'开始体验':'下一步';}
+function nextGuide(){if(guideStep<guideData.length-1){guideStep++;renderGuide();}else closeGuide();}
+function closeGuide(){var g=document.getElementById('guide');if(g)g.style.display='none';try{localStorage.setItem(GUIDE_KEY,'1');}catch(e){}if(!isLogin())showLogin();}
+function replayGuide(){var g=document.getElementById('guide');if(g){g.style.display='flex';guideStep=0;renderGuide();}}
+
+/* 主题配色：暖橙(默认) / 朱漆红 / 墨绿，可实时切换并记忆 */
+var THEMES={
+  warm:{name:'暖橙',vars:{'--primary':'#e8823a','--primary-soft':'#fdeee2','--gold':'#d4a13c','--gold-soft':'#fbeed3','--cream':'#fbf6ef','--card':'#fffdfa','--ink':'#2e2620','--muted':'#8a7568','--line':'#f0ddd0','--green':'#5a8a3f'}},
+  vermilion:{name:'朱漆红',vars:{'--primary':'#c8453b','--primary-soft':'#fbe9e6','--gold':'#c99a3f','--gold-soft':'#f8efd8','--cream':'#f7efec','--card':'#fffdfa','--ink':'#33231d','--muted':'#8a6b62','--line':'#ecd6d0','--green':'#5a8a3f'}},
+  green:{name:'墨绿',vars:{'--primary':'#2f6b5e','--primary-soft':'#e3efeb','--gold':'#c9a24b','--gold-soft':'#f4ecd6','--cream':'#f4f1e8','--card':'#fffefb','--ink':'#233027','--muted':'#6f7d74','--line':'#dde6e0','--green':'#4f8a3f'}}
+};
+var THEME_KEY='ttbd_theme';
+function applyTheme(key){var t=THEMES[key];if(!t)return;for(var k in t.vars){document.documentElement.style.setProperty(k,t.vars[k]);}try{localStorage.setItem(THEME_KEY,key);}catch(e){}}
+function setTheme(key){applyTheme(key);var tv=document.getElementById('themeVal');if(tv)tv.textContent=THEMES[key].name;['warm','vermilion','green'].forEach(function(k){var c=document.getElementById('ck-'+k);if(c)c.textContent=(k===key?'✓':'');});}
+function pickBless(el){document.querySelectorAll('.bless-chips .chip').forEach(function(c){c.classList.remove('on');});el.classList.add('on');}
+
+/* 会员 选中套餐 */
+function selectPlan(el){document.querySelectorAll('.plan .opt').forEach(function(o){o.classList.remove('on');});el.classList.add('on');}
+
+/* 登录态：localStorage 记忆 */
+var LOGIN_KEY='ttbd_login';
+var pendingLogin=null;
+function isLogin(){try{return localStorage.getItem(LOGIN_KEY)==='1';}catch(e){return false;}}
+function showLogin(){var l=document.getElementById('login');if(l)l.style.display='flex';}
+function closeLogin(){var l=document.getElementById('login');if(l)l.style.display='none';pendingLogin=null;}
+function updateLoginUI(){var n=document.getElementById('acctName');if(n)n.textContent=isLogin()?'微信用户（已登录）':'未登录';}
+function doLogin(){try{localStorage.setItem(LOGIN_KEY,'1');}catch(e){}closeLogin();updateLoginUI();if(pendingLogin){var f=pendingLogin;pendingLogin=null;f();}else{go('home','home');}}
+function logout(){try{localStorage.removeItem(LOGIN_KEY);}catch(e){}updateLoginUI();showLogin();}
+function ensureLogin(cb){if(isLogin())return true;pendingLogin=cb;showLogin();return false;}
+
+/* 购买与支付闭环：会员 走 确认订单→微信支付→成功 */
+var orderType='member';
+function openOrder(type){
+  if(!ensureLogin(function(){openOrder(type);}))return;
+  orderType=type;
+  var nameEl=document.getElementById('ordName'),priceEl=document.getElementById('ordPrice'),typeEl=document.getElementById('ordType'),cycleEl=document.getElementById('ordCycle'),payBtn=document.getElementById('orderPayBtn');
+  var onOpt=document.querySelector('.plan .opt.on');
+  var price=onOpt?onOpt.querySelector('b').textContent:'¥168';
+  var pname=onOpt?onOpt.querySelector('span').textContent:'年卡 · 推荐';
+  typeEl.textContent='典声 · 畅听会员';
+  nameEl.textContent=pname;
+  priceEl.textContent=price;cycleEl.textContent=(price==='¥18'?'30 天':'365 天');
+  payBtn.textContent='微信支付 '+priceEl.textContent;
+  var pa=document.getElementById('payAmt'); if(pa)pa.innerHTML=priceEl.textContent+'<small>.00</small>';
+  go('order','vip');
+}
+function afterPay(){ go('vip','vip'); }
+
+/* 激励视频解锁：限免回目→看广告→解锁 */
+var adTimer=null;
+function openUnlock(){ go('unlock','home'); }
+function startAd(){
+  var cnt=15,box=document.getElementById('adCnt'),skip=document.getElementById('adSkip'),info=document.getElementById('unlockInfo'),goBtn=document.getElementById('unlockGo');
+  if(box)box.textContent=cnt+'s'; if(skip)skip.style.display='none'; if(info)info.style.display='block'; if(goBtn)goBtn.style.display='none';
+  if(adTimer)clearInterval(adTimer);
+  adTimer=setInterval(function(){cnt--;if(box)box.textContent=cnt+'s';if(cnt<=5&&skip)skip.style.display='block';if(cnt<=0){clearInterval(adTimer);finishAd();}},1000);
+}
+function finishAd(){
+  if(adTimer)clearInterval(adTimer);
+  var info=document.getElementById('unlockInfo'),goBtn=document.getElementById('unlockGo'),split=document.getElementById('unlockSplit');
+  if(info)info.innerHTML='<span class="unlock-done">✓ 已解锁《西游记》第 11–20 回</span>看广告免费解锁成功，去听听后续精彩吧～';
+  if(goBtn)goBtn.style.display='block';
+  if(split)split.style.display='none';
+}
+
+/* ============ 书豆积分 + 任务中心 ============ */
+var BEAN_KEY='ttbd_beans', BEAN_LOG_KEY='ttbd_bean_log', TASK_KEY='ttbd_tasks', UNLOCK_COST=50;
+function getBeans(){try{return parseInt(localStorage.getItem(BEAN_KEY)||'0',10)||0;}catch(e){return 0;}}
+function setBeans(n){try{localStorage.setItem(BEAN_KEY,String(n));}catch(e){}updateBeanUI();}
+function addBeans(n,reason){setBeans(getBeans()+n);addBeanLog('+'+n,reason);}
+function spendBeans(n){if(getBeans()<n)return false;setBeans(getBeans()-n);addBeanLog('-'+n,'兑换听书权益');return true;}
+function addBeanLog(d,r){try{var log=JSON.parse(localStorage.getItem(BEAN_LOG_KEY)||'[]');log.unshift({d:d,r:r,t:Date.now()});if(log.length>30)log.pop();localStorage.setItem(BEAN_LOG_KEY,JSON.stringify(log));}catch(e){}}
+function fmtT(t){var d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
+function updateBeanUI(){var n=getBeans();['beanNum','beanNum2','beanNum3','unlockBean'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=n;});var b=document.getElementById('beanUnlockBtn');if(b){if(n<UNLOCK_COST){b.classList.add('gone');b.textContent='书豆不足';}else{b.classList.remove('gone');b.textContent='🫘 书豆解锁';}}}
+function getTasks(){try{return JSON.parse(localStorage.getItem(TASK_KEY)||'{}');}catch(e){return {};}}
+function setTasks(o){try{localStorage.setItem(TASK_KEY,JSON.stringify(o));}catch(e){}}
+var TASK_DEF={sign:10,listen:5,share:8,book:50,streak:30};
+var TASK_NAME={sign:'每日签到',listen:'听完推荐回',share:'分享好友',book:'听完一整本',streak:'连续听书7天'};
+function claimTask(id){
+  var t=getTasks();if(t[id])return;
+  addBeans(TASK_DEF[id],'任务：'+TASK_NAME[id]);
+  t[id]=true;setTasks(t);renderTasks();
+}
+function renderTasks(){
+  var t=getTasks();
+  Object.keys(TASK_DEF).forEach(function(id){
+    var item=document.getElementById('task-'+id);if(!item)return;
+    var b=item.querySelector('.claim'),p=item.querySelector('.prog i');
+    if(t[id]){if(b){b.classList.add('done');b.textContent='已领取';}if(p)p.style.width='100%';}
+    else{if(b){b.classList.remove('done');b.textContent=(id==='sign'?'签到 +'+TASK_DEF[id]:'领取 +'+TASK_DEF[id]);}if(p)p.style.width='0%';}
+  });
+  updateBeanUI();
+}
+function renderPoints(){
+  updateBeanUI();
+  var log=[];try{log=JSON.parse(localStorage.getItem(BEAN_LOG_KEY)||'[]');}catch(e){}
+  var box=document.getElementById('beanLog');if(!box)return;
+  if(log.length===0){box.innerHTML='<div class="dl-empty">还没有获取记录，去做任务赚书豆吧～</div>';return;}
+  box.innerHTML=log.map(function(l){var pos=l.d.indexOf('+')===0;return '<div class="pts-row"><div class="ic">'+(pos?'➕':'➖')+'</div><div class="meta"><b>'+l.r+'</b><p>'+fmtT(l.t)+'</p></div><span class="val" style="color:'+(pos?'var(--primary)':'var(--muted)')+'">'+l.d+'</span></div>';}).join('');
+}
+function renderUnlock(){
+  var info=document.getElementById('unlockInfo');
+  if(info)info.innerHTML='<b>看广告，免费解锁</b><br>观看完整激励视频，即可免费解锁《西游记》第 11–20 回，无需开通会员。';
+  var g=document.getElementById('unlockGo');if(g)g.style.display='none';
+  var s=document.getElementById('unlockSplit');if(s)s.style.display='block';
+  var c=document.getElementById('unlockCost');if(c)c.textContent=UNLOCK_COST;
+  updateBeanUI();
+}
+function useBeansUnlock(){
+  if(getBeans()<UNLOCK_COST){alert('书豆不足，先去做任务赚书豆吧～');return;}
+  spendBeans(UNLOCK_COST);
+  var info=document.getElementById('unlockInfo');if(info)info.innerHTML='<span class="unlock-done">✓ 已用 '+UNLOCK_COST+' 书豆解锁《西游记》第 11–20 回</span>去听听后续精彩吧～';
+  var g=document.getElementById('unlockGo');if(g)g.style.display='block';
+  var s=document.getElementById('unlockSplit');if(s)s.style.display='none';
+  renderPoints();
+}
+function exchange(item,cost){
+  var names={chapter:'解锁 1 组章节',pass:'畅听券·24h',voice:'角色音色·悟空'};
+  if(getBeans()<cost){alert('书豆不足，先去做任务赚书豆吧～');return;}
+  spendBeans(cost);
+  alert('兑换成功：'+names[item]+'\n（Demo：权益已发放到账户）');
+  renderPoints();
+}
+
+/* 搜索页：输入框 + 历史 + 热门 + 实时结果 */
+var DEMO_BOOKS=[
+ {n:'西游记',t:'经典名著·评书伴读·100回',lock:false},
+ {n:'三国演义',t:'历史演义·即将上线',lock:true},
+ {n:'水浒传',t:'世情英雄·即将上线',lock:true},
+ {n:'红楼梦',t:'世情小说·即将上线',lock:true},
+ {n:'封神演义',t:'神怪神话·敬请期待',lock:true},
+ {n:'聊斋',t:'世情神怪·敬请期待',lock:true},
+ {n:'醒木先生',t:'说书人·评书腔讲解',lock:false}
+];
+var HOT=['西游记','评书','免费听书','四大名著','醒木先生','封神演义'];
+var searchHistory=[];
+function openSearch(){ go('search','home'); setTimeout(function(){var i=document.getElementById('searchInput');if(i){i.focus();}},60); renderSearch(''); }
+function renderHot(){var box=document.getElementById('hotChips');if(!box)return;box.innerHTML=HOT.map(function(h){return '<span class="hc" onclick="fromChip(\''+h+'\')">'+h+'</span>';}).join('');}
+function renderHistory(){var box=document.getElementById('histChips');if(!box)return;if(searchHistory.length===0){box.innerHTML='<span style="color:var(--muted);font-size:14px">暂无搜索记录</span>';return;}box.innerHTML=searchHistory.map(function(h){return '<span class="hc" onclick="fromChip(\''+h+'\')">'+h+'</span>';}).join('');}
+function fromChip(q){var i=document.getElementById('searchInput');if(i)i.value=q;doSearch();}
+function onSearchInput(){var i=document.getElementById('searchInput');var clr=document.getElementById('searchClr');if(clr)clr.style.display=i.value?'block':'none';renderSearch(i.value);}
+function clearInput(){var i=document.getElementById('searchInput');if(i)i.value='';var clr=document.getElementById('searchClr');if(clr)clr.style.display='none';renderSearch('');i.focus();}
+function doSearch(){var i=document.getElementById('searchInput');var q=(i.value||'').trim();if(!q)return;if(searchHistory.indexOf(q)<0)searchHistory.unshift(q);if(searchHistory.length>8)searchHistory.pop();renderHistory();renderSearch(q);}
+function clearHistory(){searchHistory=[];renderHistory();}
+function renderSearch(q){
+  q=(q||'').trim();
+  var sug=document.getElementById('searchSug');
+  var res=document.getElementById('searchResults');
+  if(!q){ if(sug)sug.style.display='block'; if(res)res.innerHTML=''; return; }
+  if(sug)sug.style.display='none';
+  var kw=q.toLowerCase();
+  var hits=DEMO_BOOKS.filter(function(b){return b.n.toLowerCase().indexOf(kw)>=0||b.t.toLowerCase().indexOf(kw)>=0;});
+  if(hits.length===0){ res.innerHTML='<div class="empty">没有找到「'+q+'」相关的书籍<br>换个词试试，或先听听《西游记》～</div>'; return; }
+  res.innerHTML=hits.map(function(b){
+    return '<div class="rank" data-name="'+b.n+'" data-lock="'+b.lock+'"><div class="no">🔍</div><img class="cv" src="covers/Chinese_classical_mythology_bo_2026-08-18T04-15-12.png"><div class="meta"><b>'+b.n+'</b><p>'+b.t+'</p></div><div class="play">▶</div></div>';
+  }).join('');
+  res.querySelectorAll('.rank').forEach(function(r){
+    r.onclick=function(){ if(r.getAttribute('data-lock')==='true') openModal('soonModal'); else go('detail','home'); };
+  });
+}
+
+/* 书架点击 & 搜索入口 */
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.book').forEach(function(b){
+    b.style.cursor='pointer';
+    b.addEventListener('click',function(){ if(b.classList.contains('locked')) openModal('soonModal'); else go('detail','home'); });
+  });
+  var sr=document.querySelector('.search'); if(sr){sr.style.cursor='pointer';sr.onclick=function(){openSearch();};}
+});
+
+/* 初始化：应用上次主题；引导仅首次启动展示 */
+(function(){
+  var saved=null;try{saved=localStorage.getItem(THEME_KEY);}catch(e){}
+  if(saved&&THEMES[saved]){applyTheme(saved);var tv=document.getElementById('themeVal');if(tv)tv.textContent=THEMES[saved].name;['warm','vermilion','green'].forEach(function(k){var c=document.getElementById('ck-'+k);if(c)c.textContent=(k===saved?'✓':'');});}
+  var eSaved=null;try{eSaved=localStorage.getItem(EASY_KEY);}catch(e){}
+  if(eSaved!=='0'){document.body.classList.add('easy');}
+  var eSw=document.getElementById('easySwitch');if(eSw)eSw.classList.toggle('off',eSaved==='0');
+  renderGuide();
+  renderHot(); renderHistory(); updateLoginUI(); renderTasks();
+  var seen=false;try{seen=localStorage.getItem(GUIDE_KEY)==='1';}catch(e){}
+  var loginEl=document.getElementById('login');
+  if(!seen){ var g=document.getElementById('guide'); if(g)g.style.display='flex'; if(loginEl)loginEl.style.display='none'; }
+  else { var g2=document.getElementById('guide'); if(g2)g2.style.display='none'; if(!isLogin()&&loginEl)loginEl.style.display='flex'; }
+})();
+</script>
+</body>
+</html>
